@@ -1,0 +1,88 @@
+# Frontend CI on development + production.
+# Vercel preview: PRs and pushes to `development`.
+# Vercel production: pushes to `production`.
+# Official pattern: https://vercel.com/kb/guide/how-can-i-use-github-actions-with-vercel
+#
+# GitHub secrets:
+#   VERCEL_TOKEN
+#   VERCEL_ORG_ID
+#   VERCEL_PROJECT_ID
+#
+# Vercel project env:
+#   VITE_API_BASE_URL  — https://nutrivision-ai-backend.fastapicloud.dev
+#
+# Disable Vercel Git auto-deploy (vercel.json git.deploymentEnabled) so Actions
+# is the only deployer.
+
+name: Frontend CI
+
+on:
+  pull_request:
+    branches: [development, production]
+    paths:
+      - "frontend/**"
+      - ".github/workflows/frontend-ci.yml"
+  push:
+    branches: [development, production]
+    paths:
+      - "frontend/**"
+      - ".github/workflows/frontend-ci.yml"
+
+concurrency:
+  group: frontend-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: frontend/package.json
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm exec tsc -b --pretty false
+
+      - name: Install Vercel CLI
+        if: github.event.pull_request.head.repo.full_name == github.repository || github.event_name == 'push'
+        run: npm install --global vercel@latest
+
+      - name: Deploy preview to Vercel
+        if: >
+          (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
+          || (github.event_name == 'push' && github.ref == 'refs/heads/development')
+        run: |
+          vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+          vercel build --token=${{ secrets.VERCEL_TOKEN }}
+          vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy production to Vercel
+        if: github.event_name == 'push' && github.ref == 'refs/heads/production'
+        run: |
+          vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+          vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+          vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
