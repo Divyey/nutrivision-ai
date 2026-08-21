@@ -1,0 +1,28 @@
+---
+description: Each backend service must expose and register its own health check
+globs: backend/services/**/*.py
+alwaysApply: true
+---
+
+# Service health checks
+
+`/health` is an **aggregator**, not a generic API ping. Each service under `backend/services/{name}/` owns its health.
+
+When adding a service (auth, food, nutrition, …):
+
+1. Add `{name}_health.py` in that service (example: `services/auth/services/auth_health.py`).
+2. Check that service’s real dependencies (auth → Neon). Reuse `infrastructure.database.health.check_database` for DB; do not duplicate connection logic.
+3. Return a dict with at least `"status": "healthy" | "unhealthy"`. Never include `DATABASE_URL` or secrets.
+4. Register the check in `core/health.py` `SERVICE_CHECKS`.
+5. Expose `GET /{name}/health` on that service’s router.
+6. Startup logs one line per registered service: `[✓] AUTH       HEALTHY` or `[✗] AUTH       UNHEALTHY`.
+
+`GET /health` must include every registered service and return **503** if any service is unhealthy.
+
+```text
+services/food/services/food_health.py     ✅
+core/health.py  SERVICE_CHECKS["food"] = … ✅
+GET /food/health                           ✅
+
+Only a root /health with hardcoded "api"/"database" keys for new work  ❌
+```

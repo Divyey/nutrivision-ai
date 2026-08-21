@@ -1,0 +1,24 @@
+---
+description: Frontend architecture — Ant Design, pages, services, routes
+globs: frontend/**/*.{ts,tsx}
+alwaysApply: true
+---
+
+# Frontend architecture
+
+Stack: React + TypeScript + Vite + Ant Design.
+
+- Use AntD for buttons, forms, layout, tables, modals, etc. Do not recreate those primitives.
+- `components/ui/` is only NutriVision-specific widgets built on AntD.
+- `components/layout/` holds `AppLayout` and `PublicLayout`.
+- `pages/` = screens. `services/{Domain}Service/` = API clients aligned with `backend/services/{domain}/`.
+- `AppRoutes/` = React Router + `PrivateRoute`.
+- No `features/`, `container/`, `atoms/`, `molecules/`, `organisms/`.
+- No extra global state; auth uses `useAuth` + session JWT.
+- PascalCase for pages/services/components; camelCase for hooks/utils.
+
+```text
+AuthService/AuthService.ts  →  backend/services/auth/   ✅
+pages/Login/LoginPage.tsx                               ✅
+components/ui/Button.tsx                                ❌
+```
