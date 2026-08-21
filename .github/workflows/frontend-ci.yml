@@ -7,6 +7,9 @@
 #   VERCEL_TOKEN
 #   VERCEL_ORG_ID
 #   VERCEL_PROJECT_ID
+# Link via those env vars. Run vercel from the repo root (project rootDirectory
+# is frontend). Do not use --scope or vercel pull (pull 403s in CI with a
+# token even when local `vercel login` pull works).
 #
 # Vercel project env:
 #   VITE_API_BASE_URL  — https://nutrivision-ai-backend.fastapicloud.dev
@@ -75,14 +78,22 @@ jobs:
         if: >
           (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
           || (github.event_name == 'push' && github.ref == 'refs/heads/development')
+        working-directory: ${{ github.workspace }}
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: |
-          vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
-          vercel build --token=${{ secrets.VERCEL_TOKEN }}
-          vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+          rm -rf .vercel frontend/.vercel
+          vercel deploy --yes --token="$VERCEL_TOKEN"
 
       - name: Deploy production to Vercel
         if: github.event_name == 'push' && github.ref == 'refs/heads/production'
+        working-directory: ${{ github.workspace }}
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: |
-          vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-          vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-          vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+          rm -rf .vercel frontend/.vercel
+          vercel deploy --prod --yes --token="$VERCEL_TOKEN"

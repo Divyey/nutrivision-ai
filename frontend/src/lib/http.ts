@@ -1,14 +1,11 @@
 import { getAccessToken } from './token'
 
 function apiBase(): string {
-  const fromEnv = import.meta.env.VITE_API_BASE_URL
-  if (fromEnv) {
-    return fromEnv.replace(/\/$/, '')
+  const base = (import.meta.env.VITE_API_BASE_URL ?? '').trim().replace(/\/$/, '')
+  if (!base) {
+    throw new Error('Set VITE_API_BASE_URL (local: http://127.0.0.1:8000)')
   }
-  if (import.meta.env.PROD) {
-    return 'https://nutrivision-ai-backend.fastapicloud.dev'
-  }
-  return ''
+  return base
 }
 
 export class HttpError extends Error {
