@@ -1,0 +1,9 @@
+{
+  "framework": "vite",
+  "git": {
+    "deploymentEnabled": false
+  },
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}

@@ -18,3 +18,11 @@ Tests:
 ```bash
 pytest
 ```
+
+## FastAPI Cloud
+
+Public API: https://nutrivision-ai-backend.fastapicloud.dev/
+
+Set Application Directory to `backend`. Configure `DATABASE_URL`, `JWT_SECRET_KEY`, and `CORS_ORIGINS` (must include https://nutrivision-ai-green.vercel.app).
+
+GitHub Actions runs tests on `development` and deploys to FastAPI Cloud from `production`. Secrets: `FASTAPI_CLOUD_TOKEN`, `FASTAPI_CLOUD_APP_ID`. Point the Cloud deploy token at branch `production` (`fastapi cloud setup-ci --secrets-only --branch production`). See [deploy tokens](https://fastapicloud.com/docs/advanced-features/deploy-tokens/).

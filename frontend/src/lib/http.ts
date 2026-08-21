@@ -1,5 +1,16 @@
 import { getAccessToken } from './token'
 
+function apiBase(): string {
+  const fromEnv = import.meta.env.VITE_API_BASE_URL
+  if (fromEnv) {
+    return fromEnv.replace(/\/$/, '')
+  }
+  if (import.meta.env.PROD) {
+    return 'https://nutrivision-ai-backend.fastapicloud.dev'
+  }
+  return ''
+}
+
 export class HttpError extends Error {
   status: number
 
@@ -47,7 +58,7 @@ export async function http<T>(
     }
   }
 
-  const response = await fetch(path, {
+  const response = await fetch(`${apiBase()}${path}`, {
     method: options.method ?? 'GET',
     headers,
     body: options.body === undefined ? undefined : JSON.stringify(options.body),
