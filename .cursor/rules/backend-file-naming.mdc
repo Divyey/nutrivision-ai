@@ -1,0 +1,32 @@
+---
+description: Backend Python file naming for service layers
+globs: backend/**/*.py
+alwaysApply: true
+---
+
+# Backend file naming
+
+Do not name a layer file after the domain only (`auth.py`). The filename must include the layer.
+
+Pattern: `{domain}_{layer}.py`
+
+| Layer folder | Filename |
+|---|---|
+| `controller/` | `auth_controller.py` |
+| `services/` | `auth_service.py` |
+| `routes/` | `auth_routes.py` |
+| `schema/` | `auth_schema.py` (when adding/renaming) |
+| `middleware/` | `auth_middleware.py` (when adding/renaming) |
+
+Examples:
+
+```text
+services/auth/controller/auth_controller.py   ✅
+services/auth/services/auth_service.py        ✅
+services/auth/routes/auth_routes.py           ✅
+
+services/auth/controller/auth.py              ❌
+services/food/routes/food.py                  ❌
+```
+
+The same rule applies to every future service (`food`, `nutrition`, etc.): `food_controller.py`, `food_service.py`, `food_routes.py`.
