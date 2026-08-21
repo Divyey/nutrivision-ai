@@ -1,7 +1,7 @@
 import { App as AntdApp, ConfigProvider, theme } from 'antd'
 import { BrowserRouter } from 'react-router-dom'
 
-import { AppRoutes } from './AppRoutes/AppRoutes'
+import { AppRoutes } from './routes/AppRoutes'
 import { AuthProvider } from './hooks/AuthProvider'
 
 export function App() {
