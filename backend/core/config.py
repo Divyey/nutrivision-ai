@@ -19,7 +19,8 @@ class Settings(BaseSettings):
     cors_origins: str = (
         "http://localhost:5173,"
         "http://127.0.0.1:5173,"
-        "https://nutrivision-ai-green.vercel.app"
+        "https://nutrivision-ai-green.vercel.app,"
+        "https://nutrivision-ai-divyeys-projects.vercel.app"
     )
 
     @property
