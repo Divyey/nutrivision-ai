@@ -25,20 +25,33 @@ body,
   margin: 0 auto;
 }
 
+.setup-card {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
 .home-card {
   max-width: 720px;
   margin: 0 auto;
 }
 
 .app-header {
-  background: #fff;
+  display: flex;
+  align-items: center;
   padding: 0 24px;
 }
 
-.app-content {
-  margin: 24px;
+.app-header-brand {
+  color: #fff !important;
+  margin: 0 24px 0 0 !important;
+  white-space: nowrap;
 }
 
-.sider-brand {
-  padding: 16px;
+.app-header-user {
+  margin-left: auto;
+  cursor: pointer;
+}
+
+.app-header-username {
+  color: #fff;
 }
