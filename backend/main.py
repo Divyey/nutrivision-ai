@@ -9,6 +9,7 @@ from core.config import settings
 from core.health import collect_service_health, services_healthy
 from infrastructure.database import health as db_health
 from services.auth.routes.auth_routes import router as auth_router
+from services.users.routes.users_routes import router as users_router
 
 logger = logging.getLogger("nutrivision")
 
@@ -54,7 +55,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-app.include_router(auth_router)
+API_V1_PREFIX = "/api/v1"
+app.include_router(auth_router, prefix=API_V1_PREFIX)
+app.include_router(users_router, prefix=API_V1_PREFIX)
 
 
 @app.get("/health", tags=["health"], summary="Aggregate service health")

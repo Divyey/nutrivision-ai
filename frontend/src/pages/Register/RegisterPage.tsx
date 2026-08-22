@@ -21,7 +21,7 @@ export function RegisterPage() {
           setSubmitting(true)
           try {
             await register(values)
-            navigate('/dashboard')
+            navigate('/register/setup')
           } catch (error) {
             message.error(error instanceof Error ? error.message : 'Registration failed')
           } finally {

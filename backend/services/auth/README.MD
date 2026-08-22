@@ -8,8 +8,8 @@ services/auth/
 ├── controller/auth_controller.py
 ├── services/auth_service.py
 ├── services/auth_health.py
-├── schema/auth.py
-└── middleware/deps.py
+├── schema/auth_schema.py
+└── middleware/auth_middleware.py
 ```
 
 User rows live in `infrastructure/database/models/user.py`, not in this package.
@@ -18,11 +18,11 @@ User rows live in `infrastructure/database/models/user.py`, not in this package.
 
 | Method | Path | Auth |
 |---|---|---|
-| GET | `/auth/health` | no |
-| POST | `/auth/register` | no |
-| POST | `/auth/login` | no |
-| GET | `/auth/me` | Bearer JWT |
-| PATCH | `/auth/me` | Bearer JWT |
-| PUT | `/auth/me` | Bearer JWT |
+| GET | `/api/v1/auth/health` | no |
+| POST | `/api/v1/auth/register` | no |
+| POST | `/api/v1/auth/login` | no |
+| GET | `/api/v1/auth/me` | Bearer JWT |
+| PATCH | `/api/v1/auth/me` | Bearer JWT |
+| PUT | `/api/v1/auth/me` | Bearer JWT |
 
-Passwords are hashed with bcrypt. Soft-deleted users (`deleted_at` set) cannot log in or use `/auth/me`.
+Passwords are hashed with bcrypt. Soft-deleted users (`deleted_at` set) cannot log in or use `/api/v1/auth/me`. Identity only (`name`, `email`). Profile and goals live on `/api/v1/users/me`.

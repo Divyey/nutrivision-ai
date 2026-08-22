@@ -1,12 +1,14 @@
 from collections.abc import Callable
 
 from services.auth.services.auth_health import check_auth_health
+from services.users.services.users_health import check_users_health
 
 ServiceCheck = Callable[[], dict[str, str]]
 
 # Register each backend service here when it is added.
 SERVICE_CHECKS: dict[str, ServiceCheck] = {
     "auth": check_auth_health,
+    "users": check_users_health,
 }
 
 

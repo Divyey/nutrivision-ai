@@ -4,7 +4,7 @@ import type { LoginRequest, RegisterRequest, TokenResponse, UserPublic } from '.
 
 export const AuthService = {
   register(payload: RegisterRequest): Promise<UserPublic> {
-    return http<UserPublic>('/auth/register', {
+    return http<UserPublic>('/api/v1/auth/register', {
       method: 'POST',
       body: payload,
       auth: false,
@@ -12,7 +12,7 @@ export const AuthService = {
   },
 
   async login(payload: LoginRequest): Promise<TokenResponse> {
-    const token = await http<TokenResponse>('/auth/login', {
+    const token = await http<TokenResponse>('/api/v1/auth/login', {
       method: 'POST',
       body: payload,
       auth: false,
@@ -22,6 +22,6 @@ export const AuthService = {
   },
 
   me(): Promise<UserPublic> {
-    return http<UserPublic>('/auth/me')
+    return http<UserPublic>('/api/v1/auth/me')
   },
 }
