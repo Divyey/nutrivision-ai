@@ -72,8 +72,10 @@ jobs:
         uses: astral-sh/setup-uv@v7
 
       - name: Deploy to FastAPI Cloud
-        working-directory: backend
-        run: uv run --with "fastapi[standard]" fastapi deploy
+        # Upload backend/ as the app root. In the FastAPI Cloud dashboard,
+        # Application Directory must be empty (not "backend"), or the build
+        # looks for backend/backend and fails with ENOENT.
+        run: uv run --with "fastapi[standard]" fastapi deploy backend
         env:
           FASTAPI_CLOUD_TOKEN: ${{ secrets.FASTAPI_CLOUD_TOKEN }}
           FASTAPI_CLOUD_APP_ID: ${{ secrets.FASTAPI_CLOUD_APP_ID }}
