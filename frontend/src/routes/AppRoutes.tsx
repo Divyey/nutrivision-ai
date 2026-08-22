@@ -5,9 +5,13 @@ import { PublicLayout } from '../components/layout/PublicLayout'
 import { DashboardPage } from '../pages/Dashboard/DashboardPage'
 import { HomePage } from '../pages/Home/HomePage'
 import { LoginPage } from '../pages/Login/LoginPage'
+import { ProfilePage } from '../pages/Profile/ProfilePage'
+import { ProfileSetupPage } from '../pages/ProfileSetup/ProfileSetupPage'
 import { RegisterPage } from '../pages/Register/RegisterPage'
 import { GuestRoute } from './GuestRoute'
 import { PrivateRoute } from './PrivateRoute'
+import { RequireCompleteProfile } from './RequireCompleteProfile'
+import { RequireIncompleteProfile } from './RequireIncompleteProfile'
 
 export function AppRoutes() {
   return (
@@ -20,8 +24,16 @@ export function AppRoutes() {
         </Route>
       </Route>
       <Route element={<PrivateRoute />}>
-        <Route element={<AppLayout />}>
-          <Route path="/dashboard" element={<DashboardPage />} />
+        <Route element={<PublicLayout authLinks={false} />}>
+          <Route element={<RequireIncompleteProfile />}>
+            <Route path="/register/setup" element={<ProfileSetupPage />} />
+          </Route>
+        </Route>
+        <Route element={<RequireCompleteProfile />}>
+          <Route element={<AppLayout />}>
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+          </Route>
         </Route>
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />

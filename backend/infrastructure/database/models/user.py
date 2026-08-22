@@ -1,7 +1,8 @@
 import uuid
-from datetime import datetime
+from datetime import date, datetime
+from decimal import Decimal
 
-from sqlalchemy import DateTime, Index, String, func, text
+from sqlalchemy import Date, DateTime, Index, Integer, Numeric, String, func, text
 from sqlalchemy.orm import Mapped, mapped_column
 
 from infrastructure.database.models.base import Base
@@ -23,6 +24,20 @@ class User(Base):
     name: Mapped[str] = mapped_column(String(100), nullable=False)
     email: Mapped[str] = mapped_column(String(255), nullable=False)
     password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
+    age: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    gender: Mapped[str | None] = mapped_column(String(20), nullable=True)
+    weight_kg: Mapped[Decimal | None] = mapped_column(Numeric(6, 2), nullable=True)
+    height_cm: Mapped[Decimal | None] = mapped_column(Numeric(6, 2), nullable=True)
+    activity_level: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    vegan_status: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    allergy: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    status: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    start_date: Mapped[date | None] = mapped_column(Date, nullable=True)
+    target_calories: Mapped[Decimal | None] = mapped_column(Numeric(10, 2), nullable=True)
+    target_protein: Mapped[Decimal | None] = mapped_column(Numeric(10, 2), nullable=True)
+    target_carb: Mapped[Decimal | None] = mapped_column(Numeric(10, 2), nullable=True)
+    target_fat: Mapped[Decimal | None] = mapped_column(Numeric(10, 2), nullable=True)
+    target_bmi: Mapped[Decimal | None] = mapped_column(Numeric(10, 2), nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         nullable=False,

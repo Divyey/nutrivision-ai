@@ -3,7 +3,7 @@ import { Link, Outlet } from 'react-router-dom'
 
 const { Header, Content, Footer } = Layout
 
-export function PublicLayout() {
+export function PublicLayout({ authLinks = true }: { authLinks?: boolean }) {
   return (
     <Layout className="page-shell">
       <Header className="public-header">
@@ -13,12 +13,16 @@ export function PublicLayout() {
               NutriVision AI
             </Typography.Title>
           </Link>
-          <Link to="/login" style={{ color: '#fff' }}>
-            Login
-          </Link>
-          <Link to="/register" style={{ color: '#fff' }}>
-            Register
-          </Link>
+          {authLinks ? (
+            <>
+              <Link to="/login" style={{ color: '#fff' }}>
+                Login
+              </Link>
+              <Link to="/register" style={{ color: '#fff' }}>
+                Register
+              </Link>
+            </>
+          ) : null}
         </Space>
       </Header>
       <Content style={{ padding: '24px 16px' }}>
