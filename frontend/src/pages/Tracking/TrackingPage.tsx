@@ -160,8 +160,28 @@ export function TrackingPage() {
   }, [date])
 
   useEffect(() => {
-    void load()
-  }, [load])
+    let cancelled = false
+    MealService.getDiary(date)
+      .then((next) => {
+        if (cancelled) {
+          return
+        }
+        setDiary(next)
+        setError(null)
+        setLoading(false)
+      })
+      .catch((err: unknown) => {
+        if (cancelled) {
+          return
+        }
+        setError(err instanceof HttpError ? err.message : "Could not load this day's diary.")
+        setDiary(null)
+        setLoading(false)
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [date])
 
   async function changeQuantity(entry: MealEntry, quantity: number | null) {
     if (quantity == null) {
