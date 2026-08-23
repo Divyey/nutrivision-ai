@@ -9,7 +9,7 @@ pnpm dev
 
 Copy `.env.example` to `.env` and set `VITE_API_BASE_URL` to your API origin (`http://127.0.0.1:8000` locally). Run the backend first.
 
-V1 screens: Home, Login, Register, Dashboard (JWT). Architecture: `docs/architecture/FRONTEND.md`.
+Screens: public Home / Login / Register; signed-in Dashboard, Profile, Scan (`/detect`), and placeholder Recommend / Tracking / Progress. Architecture: `docs/architecture/FRONTEND.md`. Scan uses `POST /api/v1/food/predict` (004, detections only).
 
 ## Vercel
 

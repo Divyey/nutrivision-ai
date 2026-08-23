@@ -1,6 +1,12 @@
 import { http } from '../../lib/http'
 import { setAccessToken } from '../../lib/token'
-import type { LoginRequest, RegisterRequest, TokenResponse, UserPublic } from '../../types/auth'
+import type {
+  LoginRequest,
+  RegisterRequest,
+  TokenResponse,
+  UpdateIdentityRequest,
+  UserPublic,
+} from '../../types/auth'
 
 export const AuthService = {
   register(payload: RegisterRequest): Promise<UserPublic> {
@@ -23,5 +29,12 @@ export const AuthService = {
 
   me(): Promise<UserPublic> {
     return http<UserPublic>('/api/v1/auth/me')
+  },
+
+  updateMe(payload: UpdateIdentityRequest): Promise<UserPublic> {
+    return http<UserPublic>('/api/v1/auth/me', {
+      method: 'PATCH',
+      body: payload,
+    })
   },
 }

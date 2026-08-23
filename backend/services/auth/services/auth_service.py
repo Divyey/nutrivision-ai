@@ -78,7 +78,11 @@ def update_user(
     user: User,
     payload: UpdateUserRequest | ReplaceUserRequest,
 ) -> UserPublic:
-    if isinstance(payload, UpdateUserRequest) and payload.name is None and payload.email is None:
+    if (
+        isinstance(payload, UpdateUserRequest)
+        and payload.name is None
+        and payload.email is None
+    ):
         raise AuthError(400, "Provide at least one field to update")
 
     if payload.name is not None:

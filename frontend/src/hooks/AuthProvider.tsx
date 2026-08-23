@@ -78,8 +78,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const refreshProfile = useCallback(async () => {
-    setProfile(await UserService.getMe())
-  }, [])
+    const session = await loadIdentityAndProfile()
+    applySession(session.user, session.profile)
+  }, [applySession])
 
   const value = useMemo(
     () => ({ user, profile, ready, login, register, logout, refreshProfile }),

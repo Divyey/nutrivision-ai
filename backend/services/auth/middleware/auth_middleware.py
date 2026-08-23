@@ -22,4 +22,6 @@ def get_current_user(
         user_id = decode_access_token(credentials.credentials)
         return require_active_user(db, user_id)
     except (InvalidTokenError, ValueError, AuthError):
-        raise HTTPException(status_code=401, detail="Could not validate credentials") from None
+        raise HTTPException(
+            status_code=401, detail="Could not validate credentials"
+        ) from None
