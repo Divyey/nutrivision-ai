@@ -23,9 +23,27 @@ class Settings(BaseSettings):
         "https://nutrivision-ai-divyeys-projects.vercel.app"
     )
 
+    # Optional FOOD_* overrides. Unset → these defaults (exported ONNX at imgsz 800).
+    food_model_path: str = str(ROOT_DIR / "models" / "food" / "best.onnx")
+    food_max_image_bytes: int = 8 * 1024 * 1024
+    food_max_pixels: int = 20_000_000
+    food_confidence_min: float = 0.4
+    food_imgsz: int = 800
+    # auto: load ONNX. fake: CI stub. unavailable: force 503 without a model file.
+    food_detector: str = "auto"
+
     @property
     def cors_origin_list(self) -> list[str]:
-        return [origin.strip() for origin in self.cors_origins.split(",") if origin.strip()]
+        return [
+            origin.strip() for origin in self.cors_origins.split(",") if origin.strip()
+        ]
+
+    @property
+    def resolved_food_model_path(self) -> Path:
+        model_path = Path(self.food_model_path)
+        if model_path.is_absolute():
+            return model_path
+        return ROOT_DIR / model_path
 
 
 settings = Settings()

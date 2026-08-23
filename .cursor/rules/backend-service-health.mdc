@@ -13,16 +13,16 @@ When adding a service (auth, food, nutrition, …):
 1. Add `{name}_health.py` in that service (example: `services/auth/services/auth_health.py`).
 2. Check that service’s real dependencies (auth → Neon). Reuse `infrastructure.database.health.check_database` for DB; do not duplicate connection logic.
 3. Return a dict with at least `"status": "healthy" | "unhealthy"`. Never include `DATABASE_URL` or secrets.
-4. Register the check in `core/health.py` `SERVICE_CHECKS`.
-5. Expose `GET /{name}/health` on that service’s router.
-6. Startup logs one line per registered service: `[✓] AUTH       HEALTHY` or `[✗] AUTH       UNHEALTHY`.
+4. **API / data services** (auth, users): register the check in `core/health.py` `SERVICE_CHECKS`. `GET /health` includes them and returns **503** if any registered check is unhealthy.
+5. **ML inference services** (food): expose `GET /{name}/health` as **readiness** (model loaded vs unavailable). Do **not** register food on the `/health` aggregator so a missing ONNX file cannot take down auth/users. `POST /predict` still returns 503 when the model is not ready.
+6. Startup logs one line per service: `[✓] AUTH       HEALTHY` or `[✗] AUTH       UNHEALTHY`. Food may log `MODEL UNAVAILABLE` without failing process liveness.
 
-`GET /health` must include every registered service and return **503** if any service is unhealthy.
+`GET /health` must include every **registered** (non-ML) service and return **503** if any of those is unhealthy.
 
 ```text
 services/food/services/food_health.py     ✅
-core/health.py  SERVICE_CHECKS["food"] = … ✅
-GET /food/health                           ✅
+GET /api/v1/food/health                     ✅  (readiness; 503 if model down)
+core/health.py SERVICE_CHECKS["food"]     ❌  (would 503 the whole API)
 
 Only a root /health with hardcoded "api"/"database" keys for new work  ❌
 ```

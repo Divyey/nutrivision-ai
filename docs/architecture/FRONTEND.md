@@ -1,6 +1,6 @@
 # Frontend architecture plan
 
-**Status:** Auth (001), profile/goals (002), and food-recognition **UI** (003) are implemented. Prediction API, meal logging, and feedback are not.
+**Status:** Auth (001), profile/goals (002), food-recognition UI (003), and food **prediction API** (004, detections only) are implemented. Meal logging and feedback are not.
 
 ---
 
@@ -22,7 +22,7 @@ frontend/src/
 └── types/{auth,user,detection}.ts
 ```
 
-**003 detect flow:** `/detect` → capture → review → analyzing (UI-only progress) → results stub. `DetectionService.analyze` POSTs multipart `image` to `/api/v1/food/predict`; the body is `unknown` until 004.
+**003 detect flow:** `/detect` → capture → review → analyzing (UI-only progress) → results. `DetectionService.analyze` POSTs multipart `image` to `/api/v1/food/predict`; 004 returns items, boxes, and confidence (no kcal).
 
 ---
 
@@ -120,12 +120,12 @@ Do **not** add later:
 
 - Auth V1 (001): Login, Register, JWT, `AuthService` → `/api/v1/auth/*`
 - Profile & goals (002): `/register/setup`, `UserService`, inline Profile view/edit (name via `PATCH /api/v1/auth/me`, goals via `PATCH /api/v1/users/me`)
-- Food recognition UI (003): `DetectionLayout` + `pages/Detection/`, `DetectionService` (provisional predict client)
+- Food recognition UI (003): `DetectionLayout` + `pages/Detection/`, `DetectionService`
+- Food prediction (004): ONNX `POST /api/v1/food/predict`; Results maps boxes, labels, confidence (not kcal)
 - App shell: `BottomNavigationBar` — Home | Recommend | Scan | Tracking | Progress. `/detect` hides the bar.
 
 **Not implemented (do not fake APIs):**
 
-- 004 — YOLO / `POST /api/v1/food/predict` JSON; map Results (items, boxes, confidence, kcal)
 - 005 — Confirm & Log; Tracking diary (Breakfast, Lunch, Snacks, Dinner, Water)
 - 006 — prediction thumbs up/down
 
@@ -150,7 +150,7 @@ frontend/src/
 ├── services/
 │   ├── AuthService/           → backend/services/auth/
 │   ├── UserService/           → backend/services/users/
-│   ├── DetectionService/      → future food/predict (004)
+│   ├── DetectionService/      → POST /api/v1/food/predict (004)
 │   ├── FoodService/           → services/food/          (later)
 │   ├── NutritionService/      → services/nutrition/     (later)
 │   ├── MealService/           → services/meals/         (later, 005)
@@ -192,7 +192,7 @@ main.tsx → App.tsx (ConfigProvider)
             → Neon
 ```
 
-Analyzing progress % is **in-flight UI only**. YOLO confidence, class labels, and kcal belong in the 004 response — never in that bar.
+Analyzing progress % is **in-flight UI only**. YOLO confidence and class labels come from the 004 JSON. Kcal is not in 004.
 
 **Naming**
 
@@ -216,3 +216,4 @@ AntD-first, domain-aligned, page/service split. Legacy templates tell us **which
 - [x] Approve first slice = Auth V1 only (no Detection UI yet)
 - [x] Approve JWT in `AuthService` + `PrivateRoute` (no Redux)
 - [x] 003: detect UI + bottom nav; predict API and meal log stay 004/005
+- [x] 004: detections-only predict API + Results overlay (no kcal)

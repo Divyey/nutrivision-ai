@@ -9,8 +9,12 @@ from services.users.schema.users_schema import (
     UserProfileResponse,
     WeightPayload,
 )
-from services.users.services.users_goals import calculate_goals
-from services.users.services.users_units import cm_to_height, height_to_cm, weight_to_kg
+from services.users.services.users_goals_service import calculate_goals
+from services.users.services.users_units_service import (
+    cm_to_height,
+    height_to_cm,
+    weight_to_kg,
+)
 
 GOAL_INPUT_FIELDS = ("age", "gender", "weight_kg", "height_cm", "activity_level")
 SIMPLE_FIELDS = {

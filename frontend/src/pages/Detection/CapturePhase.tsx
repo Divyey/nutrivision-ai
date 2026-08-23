@@ -1,6 +1,6 @@
 import { ArrowLeftOutlined } from '@ant-design/icons'
 import { App, Button, Typography } from 'antd'
-import { useRef, type ChangeEvent } from 'react'
+import { useRef, useState, type ChangeEvent, type DragEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import {
@@ -10,18 +10,19 @@ import {
 } from '../../types/detection'
 
 type CapturePhaseProps = {
-  onPhotoSelected: (file: File) => void
+  onCameraPhoto: (file: File) => void
+  onLibraryPhoto: (file: File) => void
 }
 
-export function CapturePhase({ onPhotoSelected }: CapturePhaseProps) {
+export function CapturePhase({ onCameraPhoto, onLibraryPhoto }: CapturePhaseProps) {
   const navigate = useNavigate()
   const { message } = App.useApp()
   const cameraInputRef = useRef<HTMLInputElement>(null)
   const galleryInputRef = useRef<HTMLInputElement>(null)
+  const dragDepthRef = useRef(0)
+  const [isDragging, setIsDragging] = useState(false)
 
-  function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0]
-    event.target.value = ''
+  function takeFile(file: File | undefined, autoAnalyze: boolean) {
     if (!file) {
       return
     }
@@ -29,7 +30,50 @@ export function CapturePhase({ onPhotoSelected }: CapturePhaseProps) {
       message.error(UNSUPPORTED_IMAGE_MESSAGE)
       return
     }
-    onPhotoSelected(file)
+    if (autoAnalyze) {
+      onLibraryPhoto(file)
+      return
+    }
+    onCameraPhoto(file)
+  }
+
+  function handleCameraChange(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0]
+    event.target.value = ''
+    takeFile(file, false)
+  }
+
+  function handleGalleryChange(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0]
+    event.target.value = ''
+    takeFile(file, true)
+  }
+
+  function handleDragEnter(event: DragEvent<HTMLDivElement>) {
+    event.preventDefault()
+    dragDepthRef.current += 1
+    setIsDragging(true)
+  }
+
+  function handleDragOver(event: DragEvent<HTMLDivElement>) {
+    event.preventDefault()
+    event.dataTransfer.dropEffect = 'copy'
+  }
+
+  function handleDragLeave(event: DragEvent<HTMLDivElement>) {
+    event.preventDefault()
+    dragDepthRef.current -= 1
+    if (dragDepthRef.current <= 0) {
+      dragDepthRef.current = 0
+      setIsDragging(false)
+    }
+  }
+
+  function handleDrop(event: DragEvent<HTMLDivElement>) {
+    event.preventDefault()
+    dragDepthRef.current = 0
+    setIsDragging(false)
+    takeFile(event.dataTransfer.files[0], true)
   }
 
   return (
@@ -43,12 +87,18 @@ export function CapturePhase({ onPhotoSelected }: CapturePhaseProps) {
           onClick={() => navigate('/dashboard')}
         />
       </div>
-      <div className="detection-stage detection-stage-empty">
+      <div
+        className={`detection-stage detection-stage-empty${isDragging ? ' detection-stage-drop' : ''}`}
+        onDragEnter={handleDragEnter}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+      >
         <Typography.Title level={4} style={{ color: '#fff', margin: 0 }}>
           Add a photo of your meal
         </Typography.Title>
         <Typography.Paragraph className="detection-subtitle">
-          Take a picture or choose one from your gallery to analyze.
+          Take a picture, choose one from your gallery, or drop a photo here.
         </Typography.Paragraph>
       </div>
       <div className="detection-footer">
@@ -59,14 +109,14 @@ export function CapturePhase({ onPhotoSelected }: CapturePhaseProps) {
             accept={ALLOWED_IMAGE_ACCEPT}
             capture="environment"
             hidden
-            onChange={handleFileChange}
+            onChange={handleCameraChange}
           />
           <input
             ref={galleryInputRef}
             type="file"
             accept={ALLOWED_IMAGE_ACCEPT}
             hidden
-            onChange={handleFileChange}
+            onChange={handleGalleryChange}
           />
           <Button
             color="green"

@@ -33,8 +33,12 @@ class User(Base):
     allergy: Mapped[str | None] = mapped_column(String(32), nullable=True)
     status: Mapped[str | None] = mapped_column(String(32), nullable=True)
     start_date: Mapped[date | None] = mapped_column(Date, nullable=True)
-    target_calories: Mapped[Decimal | None] = mapped_column(Numeric(10, 2), nullable=True)
-    target_protein: Mapped[Decimal | None] = mapped_column(Numeric(10, 2), nullable=True)
+    target_calories: Mapped[Decimal | None] = mapped_column(
+        Numeric(10, 2), nullable=True
+    )
+    target_protein: Mapped[Decimal | None] = mapped_column(
+        Numeric(10, 2), nullable=True
+    )
     target_carb: Mapped[Decimal | None] = mapped_column(Numeric(10, 2), nullable=True)
     target_fat: Mapped[Decimal | None] = mapped_column(Numeric(10, 2), nullable=True)
     target_bmi: Mapped[Decimal | None] = mapped_column(Numeric(10, 2), nullable=True)

@@ -9,12 +9,12 @@ from helpers import (
     soft_delete,
 )
 from infrastructure.database.models.user import User
-from services.users.services.users_goals import (
+from services.users.services.users_goals_service import (
     CALORIE_DEFICIT,
     calculate_goals,
     calculate_tdee,
 )
-from services.users.services.users_units import (
+from services.users.services.users_units_service import (
     UNSPECIFIED_BMR_OFFSET,
     height_to_cm,
     weight_to_kg,
