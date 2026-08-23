@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { isAbortError } from '../../lib/http'
+import { isAbortError, HttpError } from '../../lib/http'
 import { DetectionService } from '../../services/DetectionService/DetectionService'
 import type { DetectionPhase } from '../../types/detection'
 import { AnalyzePhase } from './AnalyzePhase'
@@ -67,11 +67,21 @@ export function DetectionPage() {
     setPhase({ name: 'capture' })
   }
 
-  function onPhotoSelected(file: File) {
+  function previewFile(file: File): string {
     releasePreview()
     const previewUrl = URL.createObjectURL(file)
     previewUrlRef.current = previewUrl
+    return previewUrl
+  }
+
+  function onCameraPhoto(file: File) {
+    const previewUrl = previewFile(file)
     setPhase({ name: 'review', file, previewUrl })
+  }
+
+  function onLibraryPhoto(file: File) {
+    const previewUrl = previewFile(file)
+    startAnalysis(file, previewUrl)
   }
 
   function startAnalysis(file: File, previewUrl: string) {
@@ -108,11 +118,15 @@ export function DetectionPage() {
       if (generation !== generationRef.current) {
         return
       }
+      const message =
+        error instanceof HttpError && error.status === 503
+          ? "Food analysis isn't available right now."
+          : "We couldn't analyze this photo."
       setPhase({
         name: 'error',
         file,
         previewUrl,
-        message: "We couldn't analyze this photo.",
+        message,
       })
     }
   }
@@ -127,7 +141,9 @@ export function DetectionPage() {
   }
 
   if (phase.name === 'capture') {
-    return <CapturePhase onPhotoSelected={onPhotoSelected} />
+    return (
+      <CapturePhase onCameraPhoto={onCameraPhoto} onLibraryPhoto={onLibraryPhoto} />
+    )
   }
 
   if (phase.name === 'review') {
@@ -148,6 +164,7 @@ export function DetectionPage() {
         key={analysisRunId}
         previewUrl={phase.previewUrl}
         status={status}
+        errorMessage={phase.name === 'error' ? phase.message : undefined}
         onCancel={cancelAnalysis}
         onTryAgain={
           phase.name === 'error' ? () => startAnalysis(phase.file, phase.previewUrl) : undefined

@@ -8,6 +8,7 @@ import { useAnalysisProgress, type AnalysisProgressStatus } from './useAnalysisP
 type AnalyzePhaseProps = {
   previewUrl: string
   status: AnalysisProgressStatus
+  errorMessage?: string
   onCancel: () => void
   onTryAgain?: () => void
   onChooseAnother?: () => void
@@ -21,16 +22,44 @@ const AnalysisImage = memo(function AnalysisImage({
   showOverlay: boolean
 }) {
   return (
-    <div className="detection-stage">
-      <img className="detection-image" src={previewUrl} alt="Meal being analyzed" />
-      {showOverlay ? <AnalyzeOverlay /> : null}
+    <div className="detection-stage detection-stage-results">
+      <div className="detection-results-frame">
+        <img className="detection-image-contain" src={previewUrl} alt="Meal being analyzed" />
+        {showOverlay ? <AnalyzeOverlay /> : null}
+      </div>
     </div>
   )
 })
 
+function runningCopy(percent: number, status: AnalysisProgressStatus) {
+  if (status === 'success') {
+    return {
+      title: 'Dishes found',
+      subtitle: 'Opening results…',
+    }
+  }
+  if (percent < 35) {
+    return {
+      title: 'Scanning photo…',
+      subtitle: 'Looking for dishes in the frame',
+    }
+  }
+  if (percent < 72) {
+    return {
+      title: 'Identifying dishes…',
+      subtitle: 'Matching items in your photo',
+    }
+  }
+  return {
+    title: 'Almost done…',
+    subtitle: 'Preparing your results',
+  }
+}
+
 export function AnalyzePhase({
   previewUrl,
   status,
+  errorMessage,
   onCancel,
   onTryAgain,
   onChooseAnother,
@@ -41,6 +70,7 @@ export function AnalyzePhase({
   } = theme.useToken()
   const isError = status === 'error'
   const progressStatus = isError ? 'exception' : status === 'success' ? 'success' : 'active'
+  const copy = runningCopy(percent, status)
 
   return (
     <div className="detection-page">
@@ -58,7 +88,7 @@ export function AnalyzePhase({
         {isError ? (
           <>
             <Typography.Title level={4} style={{ marginBottom: 4 }}>
-              We couldn&apos;t analyze this photo.
+              {errorMessage ?? "We couldn't analyze this photo."}
             </Typography.Title>
             <Typography.Paragraph className="detection-subtitle">
               Please try again or choose another photo.
@@ -75,11 +105,9 @@ export function AnalyzePhase({
         ) : (
           <>
             <Typography.Title level={4} style={{ marginBottom: 4 }} aria-live="polite">
-              Analyzing your food…
+              {copy.title}
             </Typography.Title>
-            <Typography.Paragraph className="detection-subtitle">
-              Detecting dishes and preparing nutrition information
-            </Typography.Paragraph>
+            <Typography.Paragraph className="detection-subtitle">{copy.subtitle}</Typography.Paragraph>
             <Progress
               className="detection-progress"
               percent={percent}

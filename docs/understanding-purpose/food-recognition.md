@@ -8,8 +8,8 @@
 
 | Ticket | Status | What |
 |---|---|---|
-| **003** UI | Done | `pages/Detection/` + `DetectionService.analyze` POSTs multipart field `image` to `POST /api/v1/food/predict`. Response is `unknown`. Analyzing % is request UI, not YOLO confidence. |
-| **004** API | Not started | FastAPI food service, load `best.pt`, JSON (items, boxes, confidence, kcal), map Results. |
+| **003** UI | Done | `pages/Detection/` + `DetectionService.analyze` POSTs multipart field `image` to `POST /api/v1/food/predict`. Analyzing % is request UI, not YOLO confidence. |
+| **004** API | Done (detections only) | FastAPI food service, `best.onnx` via ONNX Runtime CPU, JSON items/boxes/confidence, Results overlay. No kcal. Analyzing % is request UI. |
 | **005** Log | Not started | Confirm & Log into Breakfast / Lunch / Snacks / Dinner; Water on Tracking. Photo predict does not pick a meal slot until this ticket. |
 
 Legacy Flask: `GET /predict` form, `POST /prediction1` upload. Diary (`/track`) was a separate page (four meals, no water).

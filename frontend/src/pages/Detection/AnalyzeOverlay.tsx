@@ -1,9 +1,13 @@
 export function AnalyzeOverlay() {
   return (
     <div className="analyze-overlay" aria-hidden="true">
-      <span className="analyze-box analyze-box-a" />
-      <span className="analyze-box analyze-box-b" />
-      <span className="analyze-box analyze-box-c" />
+      <div className="analyze-vignette" />
+      <div className="analyze-viewfinder">
+        <span className="analyze-corner analyze-corner-tl" />
+        <span className="analyze-corner analyze-corner-tr" />
+        <span className="analyze-corner analyze-corner-bl" />
+        <span className="analyze-corner analyze-corner-br" />
+      </div>
       <span className="analyze-scan-line" />
     </div>
   )

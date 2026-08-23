@@ -42,6 +42,7 @@ jobs:
     env:
       DATABASE_URL: postgresql://ci:ci@127.0.0.1:5432/ci
       JWT_SECRET_KEY: github-actions-ci-only-not-for-production
+      FOOD_DETECTOR: fake
     steps:
       - uses: actions/checkout@v5
 
