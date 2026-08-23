@@ -10,6 +10,7 @@ import numpy as np
 from PIL import Image, UnidentifiedImageError
 
 from core.config import settings
+from core.event_log import log_event
 from services.food.services.food_classes_service import (
     class_id_for_onnx_index,
     label_for_class_id,
@@ -159,14 +160,36 @@ def create_food_detector() -> FoodDetector:
         return UnavailableFoodDetector()
     model_path = settings.resolved_food_model_path
     if not model_path.is_file():
-        logger.warning("Food ONNX model is not present")
+        log_event(
+            logger,
+            logging.WARNING,
+            "🧠",
+            "[FOOD] model_unavailable",
+            "food.model_unavailable",
+            reason="onnx file missing",
+        )
         return UnavailableFoodDetector()
     try:
         detector = OnnxFoodDetector(model_path)
-        logger.info("Food ONNX model loaded")
+        log_event(
+            logger,
+            logging.INFO,
+            "🧠",
+            "[FOOD] model_ready",
+            "food.model_ready",
+            path=model_path.name,
+        )
         return detector
     except Exception:
         logger.exception("Food ONNX model failed to load")
+        log_event(
+            logger,
+            logging.WARNING,
+            "🧠",
+            "[FOOD] model_unavailable",
+            "food.model_unavailable",
+            reason="onnx failed to load",
+        )
         return UnavailableFoodDetector()
 
 

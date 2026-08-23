@@ -9,6 +9,8 @@ from core.config import settings
 from helpers import API_V1, auth_headers
 from services.food.services.food_classes_service import (
     class_id_for_onnx_index,
+    foods_log_line_from_class_ids,
+    foods_log_line_from_items,
     label_for_class_id,
 )
 from services.food.services.food_detector_service import (
@@ -141,6 +143,17 @@ def test_predict_rejects_too_many_pixels(client, monkeypatch):
         headers=auth_headers(client),
     )
     assert response.status_code == 400
+
+
+def test_foods_log_line_from_class_ids_aggregates_labels():
+    assert (
+        foods_log_line_from_class_ids([5, 7, 7, 27])
+        == "green-chutney, idli ×2, coconut-chutney"
+    )
+
+
+def test_foods_log_line_from_items_includes_quantity():
+    assert foods_log_line_from_items([(7, 2), (29, 1)]) == "idli ×2, dosa ×1"
 
 
 def test_nms_class_id_matches_training_id():

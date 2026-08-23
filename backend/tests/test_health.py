@@ -19,7 +19,7 @@ def test_aggregate_health_healthy():
         "status": "healthy",
         "api": "healthy",
         "database": "healthy",
-        "services": {"auth": HEALTHY, "users": HEALTHY},
+        "services": {"auth": HEALTHY, "users": HEALTHY, "meals": HEALTHY},
     }
     assert "DATABASE_URL" not in response.text
     assert "postgresql://" not in response.text
@@ -40,6 +40,7 @@ def test_aggregate_health_auth_unhealthy():
     assert body["database"] == "unhealthy"
     assert body["services"]["auth"] == UNHEALTHY
     assert body["services"]["users"] == UNHEALTHY
+    assert body["services"]["meals"] == UNHEALTHY
     assert "DATABASE_URL" not in response.text
 
 
@@ -82,4 +83,25 @@ def test_users_service_health_unhealthy():
 
     assert response.status_code == 503
     assert response.json() == {"service": "users", **UNHEALTHY}
+    assert "postgresql://" not in response.text
+
+
+def test_meals_service_health_healthy():
+    with TestClient(app) as client:
+        response = client.get(f"{API_V1}/meals/health")
+
+    assert response.status_code == 200
+    assert response.json() == {"service": "meals", **HEALTHY}
+
+
+def test_meals_service_health_unhealthy():
+    with patch(
+        "infrastructure.database.health.check_database",
+        return_value=False,
+    ):
+        with TestClient(app) as client:
+            response = client.get(f"{API_V1}/meals/health")
+
+    assert response.status_code == 503
+    assert response.json() == {"service": "meals", **UNHEALTHY}
     assert "postgresql://" not in response.text

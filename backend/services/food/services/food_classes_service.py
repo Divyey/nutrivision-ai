@@ -49,3 +49,43 @@ def class_id_for_onnx_index(class_id: int) -> int | None:
 
 def label_for_class_id(class_id: int) -> str | None:
     return FOOD_CLASS_LABELS.get(class_id)
+
+
+def _class_label(class_id: int) -> str:
+    return label_for_class_id(class_id) or f"class-{class_id}"
+
+
+def _format_quantity(quantity: float | int) -> str:
+    value = float(quantity)
+    if value.is_integer():
+        return str(int(value))
+    return f"{value:g}"
+
+
+def foods_log_line_from_items(class_quantities: list[tuple[int, float]]) -> str:
+    """Logged payload: idli ×2, dosa ×1."""
+    if not class_quantities:
+        return "(none)"
+    return ", ".join(
+        f"{_class_label(class_id)} ×{_format_quantity(quantity)}"
+        for class_id, quantity in class_quantities
+    )
+
+
+def foods_log_line_from_class_ids(class_ids: list[int]) -> str:
+    """Detections in first-seen order: green-chutney, idli ×2, coconut-chutney."""
+    if not class_ids:
+        return "(none)"
+    counts: dict[int, int] = {}
+    order: list[int] = []
+    for class_id in class_ids:
+        if class_id not in counts:
+            order.append(class_id)
+            counts[class_id] = 0
+        counts[class_id] += 1
+    parts: list[str] = []
+    for class_id in order:
+        count = counts[class_id]
+        name = _class_label(class_id)
+        parts.append(name if count == 1 else f"{name} ×{count}")
+    return ", ".join(parts)

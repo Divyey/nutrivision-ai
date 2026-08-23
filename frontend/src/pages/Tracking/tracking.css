@@ -1,0 +1,202 @@
+.tracking-page {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.tracking-header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tracking-date-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tracking-date-copy {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+}
+
+.tracking-today.ant-typography {
+  margin: 0 !important;
+}
+
+.tracking-date {
+  font-size: 14px;
+}
+
+.tracking-summary,
+.tracking-slot {
+  width: 100%;
+}
+
+.tracking-summary-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.tracking-kcal-label {
+  line-height: 1.2;
+}
+
+.tracking-kcal-value {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.tracking-kcal-of {
+  margin-top: 2px;
+  font-size: 11px;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.tracking-macros {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tracking-macro-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.tracking-macro-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+}
+
+.tracking-macro-icon {
+  font-size: 14px;
+}
+
+.tracking-slot-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tracking-slot-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.tracking-slot-icon svg {
+  display: block;
+  width: 15px;
+  height: 15px;
+}
+
+.tracking-add.ant-btn-link {
+  color: #16a34a;
+  padding-inline: 0;
+}
+
+.tracking-add.ant-btn-link:hover,
+.tracking-add.ant-btn-link:focus-visible {
+  color: #15803d !important;
+}
+
+.tracking-empty .ant-empty {
+  margin-block: 8px;
+}
+
+.tracking-empty .ant-empty-image {
+  margin-bottom: 4px;
+}
+
+.tracking-line {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.tracking-line:last-child {
+  border-bottom: none;
+}
+
+.tracking-line-copy {
+  min-width: 0;
+  flex: 1;
+}
+
+.tracking-line-macros {
+  margin-bottom: 8px !important;
+  font-size: 12px;
+}
+
+.tracking-qty {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px 2px 4px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 999px;
+  background: #f8fafc;
+}
+
+.tracking-qty .ant-input-number {
+  width: 48px;
+}
+
+.tracking-qty .ant-input-number-input {
+  text-align: center;
+  padding: 0 4px;
+}
+
+.tracking-qty-unit {
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 12px;
+}
+
+.tracking-water-icon {
+  color: #2563eb;
+  background: #e6f4ff;
+}
+
+.tracking-water-add.ant-btn-primary {
+  background: #2563eb;
+  border-color: #2563eb;
+}
+
+.tracking-water-add.ant-btn-primary:hover,
+.tracking-water-add.ant-btn-primary:focus-visible {
+  background: #1d4ed8 !important;
+  border-color: #1d4ed8 !important;
+}
+
+@media (max-width: 480px) {
+  .tracking-summary-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tracking-summary-row .ant-progress-circle {
+    align-self: center;
+  }
+}
