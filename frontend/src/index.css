@@ -13,6 +13,11 @@ body,
 
 .page-shell {
   min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.page-shell-app {
+  min-height: 100dvh;
 }
 
 .public-header {
@@ -41,17 +46,107 @@ body,
   padding: 0 24px;
 }
 
+.app-header-mobile.ant-layout-header {
+  height: calc(48px + env(safe-area-inset-top));
+  padding: env(safe-area-inset-top) 16px 0;
+  line-height: 48px;
+}
+
 .app-header-brand {
   color: #fff !important;
   margin: 0 24px 0 0 !important;
   white-space: nowrap;
 }
 
+.app-header-mobile .app-header-brand {
+  font-size: 18px !important;
+  margin-right: 12px !important;
+}
+
 .app-header-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin-left: auto;
+  padding: 0;
+  border: none;
+  background: none;
   cursor: pointer;
 }
 
 .app-header-username {
   color: #fff;
+}
+
+.app-content {
+  padding: 16px;
+  padding-bottom: calc(88px + env(safe-area-inset-bottom));
+  margin: 0;
+  min-height: 0;
+}
+
+.app-bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  height: calc(64px + env(safe-area-inset-bottom));
+  padding: 6px 8px env(safe-area-inset-bottom);
+  background: #fff;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.app-bottom-nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+  min-height: 48px;
+  padding: 0 2px;
+  border: none;
+  background: none;
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 11px;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.app-bottom-nav-item-active {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.app-bottom-nav-icon {
+  font-size: 20px;
+}
+
+.app-bottom-nav-scan {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin: 0 4px 8px;
+  border: none;
+  border-radius: 50%;
+  background: #22c55e;
+  color: #fff;
+  font-size: 22px;
+  box-shadow: 0 8px 20px rgba(34, 197, 94, 0.4);
+  cursor: pointer;
+}
+
+.app-bottom-nav-scan:focus-visible,
+.app-bottom-nav-item:focus-visible {
+  outline: 2px solid #22c55e;
+  outline-offset: 2px;
 }

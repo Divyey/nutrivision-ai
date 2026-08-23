@@ -34,18 +34,24 @@ function errorMessage(status: number, body: unknown): string {
   return 'Request failed'
 }
 
+export function isAbortError(error: unknown): boolean {
+  return error instanceof Error && error.name === 'AbortError'
+}
+
 export async function http<T>(
   path: string,
   options: {
     method?: string
     body?: unknown
     auth?: boolean
+    signal?: AbortSignal
   } = {},
 ): Promise<T> {
+  const isFormData = options.body instanceof FormData
   const headers: Record<string, string> = {
     Accept: 'application/json',
   }
-  if (options.body !== undefined) {
+  if (options.body !== undefined && !isFormData) {
     headers['Content-Type'] = 'application/json'
   }
   if (options.auth !== false) {
@@ -58,7 +64,13 @@ export async function http<T>(
   const response = await fetch(`${apiBase()}${path}`, {
     method: options.method ?? 'GET',
     headers,
-    body: options.body === undefined ? undefined : JSON.stringify(options.body),
+    body:
+      options.body === undefined
+        ? undefined
+        : options.body instanceof FormData
+          ? options.body
+          : JSON.stringify(options.body),
+    signal: options.signal,
   })
 
   const payload: unknown = await response.json().catch(() => null)

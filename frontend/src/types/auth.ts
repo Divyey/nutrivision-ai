@@ -19,3 +19,8 @@ export type TokenResponse = {
   access_token: string
   token_type: string
 }
+
+export type UpdateIdentityRequest = {
+  name?: string
+  email?: string
+}

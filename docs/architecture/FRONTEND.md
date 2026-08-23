@@ -1,25 +1,28 @@
 # Frontend architecture plan
 
-**Status:** first slice implemented (Auth V1 UI). Detection/tracking/recommendations are not built yet.
+**Status:** Auth (001), profile/goals (002), and food-recognition **UI** (003) are implemented. Prediction API, meal logging, and feedback are not.
 
 ---
 
 ## Current NutriVision frontend
 
-Auth V1 is implemented: AntD, React Router, `AuthService`, Login/Register/Dashboard.
+AntD, React Router, JWT via `useAuth`. Logged-in chrome is a header + **bottom nav** (no sider). Scan is fullscreen outside `AppLayout`.
 
 ```text
 frontend/src/
 ├── App.tsx
-├── AppRoutes/
-├── components/layout/
+├── routes/                    # AppRoutes, PrivateRoute, GuestRoute, profile gates
+├── components/layout/         # AppLayout, PublicLayout, DetectionLayout, BottomNavigationBar
 ├── hooks/useAuth.ts
 ├── hooks/AuthProvider.tsx
-├── lib/http.ts
-├── pages/{Home,Login,Register,Dashboard}/
-├── services/AuthService/
-└── types/auth.ts
+├── lib/http.ts                # JSON + FormData + AbortSignal
+├── pages/{Home,Login,Register,Dashboard,Profile,ProfileSetup,Detection}/
+├── pages/{Recommendation,Tracking,Progress}/   # empty routes until later tickets
+├── services/{AuthService,UserService,DetectionService}/
+└── types/{auth,user,detection}.ts
 ```
+
+**003 detect flow:** `/detect` → capture → review → analyzing (UI-only progress) → results stub. `DetectionService.analyze` POSTs multipart `image` to `/api/v1/food/predict`; the body is `unknown` until 004.
 
 ---
 
@@ -29,7 +32,7 @@ Flask + Jinja + mixed Bootstrap 3/4/5 + jQuery + Chart.js / EasyPieChart.
 
 | Legacy | Role | New mapping |
 |---|---|---|
-| `header_footer.html` | Logged-in navbar + footer | `components/layout/AppLayout.tsx` (AntD `Layout` + `Menu`) |
+| `header_footer.html` | Logged-in navbar + footer | `AppLayout` header + `BottomNavigationBar` |
 | `login.html` / `register.html` public nav | Marketing navbar | `components/layout/PublicLayout.tsx` |
 | `form_headerfooter.html` | Ad-hoc progress bar | AntD `Progress` — do not port |
 | `home.html` / `index1.html` | Landing + photo detect | `pages/Home/`, `pages/Detection/` |
@@ -113,20 +116,20 @@ Do **not** add later:
 
 **Dependencies:** `antd`, `@ant-design/icons`, `react-router-dom`. Add `@ant-design/charts` only when Dashboard/Progress charts ship.
 
-**First implementation slice (Auth V1 — matches backend 001):**
+**Implemented:**
 
-- `App.tsx` — `ConfigProvider` (theme) + router
-- `AppRoutes/AppRoutes.tsx`, `PrivateRoute.tsx`
-- `pages/Login/LoginPage.tsx`, `pages/Register/RegisterPage.tsx`
-- `pages/Dashboard/DashboardPage.tsx` — authenticated landing stub
-- `services/AuthService/AuthService.ts` → `POST /auth/register`, `/auth/login`, `GET/PATCH /auth/me`
-- `lib/http.ts` — `fetch`/`axios` wrapper, `Authorization` header, no secrets in logs
-- `hooks/useAuth.ts`, `hooks/AuthProvider.tsx`
-- `types/auth.ts`
-- `components/layout/AppLayout.tsx`, `PublicLayout.tsx`
-- AntD theme tokens in `index.css` / `ConfigProvider` (responsive via `Grid.useBreakpoint` / `Row`/`Col`)
+- Auth V1 (001): Login, Register, JWT, `AuthService` → `/api/v1/auth/*`
+- Profile & goals (002): `/register/setup`, `UserService`, inline Profile view/edit (name via `PATCH /api/v1/auth/me`, goals via `PATCH /api/v1/users/me`)
+- Food recognition UI (003): `DetectionLayout` + `pages/Detection/`, `DetectionService` (provisional predict client)
+- App shell: `BottomNavigationBar` — Home | Recommend | Scan | Tracking | Progress. `/detect` hides the bar.
 
-**Later pages (backend not V1 yet):** Detection, Nutrition, Tracking, Progress, Profile (V2 fields), Recommendation. Folders may exist as empty placeholders **or** be created when the matching backend service exists. Prefer **create when needed** to avoid fake screens.
+**Not implemented (do not fake APIs):**
+
+- 004 — YOLO / `POST /api/v1/food/predict` JSON; map Results (items, boxes, confidence, kcal)
+- 005 — Confirm & Log; Tracking diary (Breakfast, Lunch, Snacks, Dinner, Water)
+- 006 — prediction thumbs up/down
+
+Recommend / Tracking / Progress routes exist as placeholders only.
 
 **NutriVision-specific `components/ui/` (only when a page needs them):** e.g. `MealPhotoUpload`, `DetectionResultList`, `MacroRing` (if AntD Progress is not enough). Not a generic UI kit.
 
@@ -140,27 +143,29 @@ frontend/src/
 ├── components/
 │   ├── ui/                      # NutriVision-only widgets on top of AntD
 │   └── layout/
-│       ├── AppLayout.tsx        # Header + Sidebar/Menu + Content (logged in)
-│       └── PublicLayout.tsx     # marketing/auth chrome
+│       ├── AppLayout.tsx              # header + content + bottom nav
+│       ├── BottomNavigationBar.tsx
+│       ├── DetectionLayout.tsx        # fullscreen /detect (no bottom nav)
+│       └── PublicLayout.tsx
 ├── services/
-│   ├── AuthService/
-│   │   └── AuthService.ts       → backend/services/auth/
-│   ├── FoodService/             → services/food/          (later)
-│   ├── DetectionService/        → services/detection/     (later)
-│   ├── NutritionService/        → services/nutrition/     (later)
-│   ├── MealService/             → services/meals/         (later)
-│   └── RecommendationService/   → services/recommendations/ (later)
+│   ├── AuthService/           → backend/services/auth/
+│   ├── UserService/           → backend/services/users/
+│   ├── DetectionService/      → future food/predict (004)
+│   ├── FoodService/           → services/food/          (later)
+│   ├── NutritionService/      → services/nutrition/     (later)
+│   ├── MealService/           → services/meals/         (later, 005)
+│   └── RecommendationService/ → services/recommendations/ (later)
 ├── pages/
-│   ├── Home/HomePage.tsx        # public landing (legacy home)
+│   ├── Home/HomePage.tsx
 │   ├── Login/LoginPage.tsx
 │   ├── Register/RegisterPage.tsx
 │   ├── Dashboard/DashboardPage.tsx
-│   ├── Detection/DetectionPage.tsx      # later
-│   ├── Tracking/TrackingPage.tsx        # later
-│   ├── Progress/ProgressPage.tsx        # later
-│   ├── Profile/ProfilePage.tsx          # later
-│   └── Recommendation/RecommendationPage.tsx  # later
-├── AppRoutes/
+│   ├── Detection/DetectionPage.tsx    # 003 UI; Results mapping is 004
+│   ├── Tracking/TrackingPage.tsx      # placeholder; diary is 005
+│   ├── Progress/ProgressPage.tsx      # placeholder
+│   ├── Profile/ProfilePage.tsx
+│   └── Recommendation/RecommendationPage.tsx  # placeholder
+├── routes/
 │   ├── AppRoutes.tsx
 │   └── PrivateRoute.tsx
 ├── hooks/                       # useAuth.ts, AuthProvider.tsx, …
@@ -178,12 +183,16 @@ frontend/src/
 main.tsx → App.tsx (ConfigProvider)
   → AppRoutes
     → PublicLayout → Login | Register | Home
-    → PrivateRoute → AppLayout → Dashboard | …
-      → AuthService (etc.)
+    → PrivateRoute + complete profile
+         ├── AppLayout + BottomNavigationBar → Dashboard | Recommend | Tracking | Progress | Profile
+         └── DetectionLayout → /detect (capture → review → analyzing → results)
+      → AuthService / UserService / DetectionService
         → FastAPI
           → backend/services/{domain}/
             → Neon
 ```
+
+Analyzing progress % is **in-flight UI only**. YOLO confidence, class labels, and kcal belong in the 004 response — never in that bar.
 
 **Naming**
 
@@ -196,9 +205,7 @@ main.tsx → App.tsx (ConfigProvider)
 
 ## 8. Changes, briefly
 
-The current app is an empty Vite shell. The new architecture is **AntD-first, domain-aligned, page/service split**, matching FastAPI `services/auth/` now and other backend services later.
-
-We keep the toolchain, add React Router + AntD, and only custom-build NutriVision widgets. Legacy templates tell us **which screens exist**, not how to structure React. First build after approval: Login, Register, token-gated Dashboard stub — nothing else.
+AntD-first, domain-aligned, page/service split. Legacy templates tell us **which screens exist**, not how to structure React.
 
 ---
 
@@ -208,3 +215,4 @@ We keep the toolchain, add React Router + AntD, and only custom-build NutriVisio
 - [x] Approve AntD as the only generic UI kit
 - [x] Approve first slice = Auth V1 only (no Detection UI yet)
 - [x] Approve JWT in `AuthService` + `PrivateRoute` (no Redux)
+- [x] 003: detect UI + bottom nav; predict API and meal log stay 004/005
