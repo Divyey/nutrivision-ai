@@ -16,6 +16,7 @@ from services.food.services.food_detector_service import (
     get_food_detector,
     set_food_detector,
 )
+from services.meals.routes.meals_routes import router as meals_router
 from services.users.routes.users_routes import router as users_router
 
 logger = logging.getLogger("nutrivision")
@@ -81,6 +82,7 @@ app.add_middleware(
 API_V1_PREFIX = "/api/v1"
 app.include_router(auth_router, prefix=API_V1_PREFIX)
 app.include_router(users_router, prefix=API_V1_PREFIX)
+app.include_router(meals_router, prefix=API_V1_PREFIX)
 app.include_router(food_router, prefix=API_V1_PREFIX)
 
 
