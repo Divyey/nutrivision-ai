@@ -10,9 +10,9 @@ Stack: React + TypeScript + Vite + Ant Design.
 
 - Use AntD for buttons, forms, layout, tables, modals, etc. Do not recreate those primitives.
 - `components/ui/` is only NutriVision-specific widgets built on AntD.
-- `components/layout/` holds `AppLayout` and `PublicLayout`.
+- `components/layout/` holds `AppLayout`, `PublicLayout`, `DetectionLayout`, and `BottomNavigationBar`.
 - `pages/` = screens. `services/{Domain}Service/` = API clients aligned with `backend/services/{domain}/`.
-- `AppRoutes/` = React Router + `PrivateRoute`.
+- `routes/` = React Router + `PrivateRoute`. Logged-in tabs: Home, Recommend, Scan (`/detect`), Tracking, Progress. Scan is fullscreen (no bottom nav).
 - No `features/`, `container/`, `atoms/`, `molecules/`, `organisms/`.
 - No extra global state; auth uses `useAuth` + session JWT.
 - PascalCase for pages/services/components; camelCase for hooks/utils.

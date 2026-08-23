@@ -53,6 +53,11 @@ export type UpdateProfileRequest = {
   allergy?: Allergy
 }
 
+export type ProfileFormValues = UpdateProfileRequest & {
+  name?: string
+  email?: string
+}
+
 export const ACTIVITY_OPTIONS: { value: ActivityLevel; label: string }[] = [
   { value: 'sedentary', label: 'Sedentary (little or no exercise)' },
   {
@@ -118,8 +123,10 @@ export function optionLabel(
   return options.find((option) => option.value === value)?.label ?? value
 }
 
-export function profileToFormValues(profile: UserProfile): UpdateProfileRequest {
+export function profileToFormValues(profile: UserProfile): ProfileFormValues {
   return {
+    name: profile.name,
+    email: profile.email,
     age: profile.age ?? undefined,
     gender: profile.gender ?? undefined,
     weight: profile.weight ?? undefined,
@@ -127,5 +134,17 @@ export function profileToFormValues(profile: UserProfile): UpdateProfileRequest 
     activity_level: profile.activity_level ?? undefined,
     vegan: profile.vegan ?? undefined,
     allergy: profile.allergy ?? undefined,
+  }
+}
+
+export function toProfilePatch(values: ProfileFormValues): UpdateProfileRequest {
+  return {
+    age: values.age,
+    gender: values.gender,
+    weight: values.weight,
+    height: values.height,
+    activity_level: values.activity_level,
+    vegan: values.vegan,
+    allergy: values.allergy,
   }
 }
