@@ -1,0 +1,25 @@
+---
+description: Backend event logs — dotted names, tree layout, no secrets
+globs: backend/**/*.py
+alwaysApply: false
+---
+
+# Event logs
+
+Operator-facing success and failure use `core.event_log.log_event`. One log record, several lines (`%(message)s` keeps newlines). Health banners and `logger.exception` stack traces stay as they are.
+
+**Event name** (`domain.verb` or `domain.verb_failed`) is the stable id. Add a name when you add a feature; do not keep a central catalog in this rule.
+
+- **Emoji** is a scan prefix only, not the id. Reuse one emoji per domain.
+- **Title** is `[DOMAIN] verb` (example: `[MEALS] create`). The second line is the event name (`meals.create`).
+- **Fields:** `log_event` pads keys and draws `├─` / `└─`. Include who/what/outcome (`user`, `slot`, `date`, counts, `status` on failure). Truncate ids with `short_id`. Last field `elapsed` when you timed the call.
+- **Levels:** success → `INFO`. Expected failure (4xx/domain) → `WARNING` + `*.failed`. Crash → `logger.exception` and a failed event line.
+- **Never log** JWT, passwords, connection strings, request bodies, or raw file/image bytes. Size and content type are enough for uploads.
+
+```text
+🍽️  [MEALS] create
+   meals.create
+   ├─ user      : 8f2a9b0c...
+   ├─ slot      : lunch
+   └─ elapsed   : 42 ms
+```

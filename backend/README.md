@@ -19,6 +19,15 @@ Tests:
 pytest
 ```
 
+Dish nutrition (30 detect classes) is seeded from **INDB** in `data/dish_nutrition.csv` (ghevar, jalebi, bhature still empty). Dataset notes: [`data/DISH_NUTRITION.md`](data/DISH_NUTRITION.md). Upsert:
+
+```bash
+python scripts/upsert_dish_nutrition.py --dry-run
+python scripts/upsert_dish_nutrition.py
+```
+
+See [`data/DISH_NUTRITION.md`](data/DISH_NUTRITION.md) for snapshot vs PATCH behavior.
+
 ## FastAPI Cloud
 
 Public API: https://nutrivision-ai-backend.fastapicloud.dev/

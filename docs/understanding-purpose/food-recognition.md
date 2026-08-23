@@ -10,7 +10,7 @@
 |---|---|---|
 | **003** UI | Done | `pages/Detection/` + `DetectionService.analyze` POSTs multipart field `image` to `POST /api/v1/food/predict`. Analyzing % is request UI, not YOLO confidence. |
 | **004** API | Done (detections only) | FastAPI food service, `best.onnx` via ONNX Runtime CPU, JSON items/boxes/confidence, Results overlay. No kcal. Analyzing % is request UI. |
-| **005** Log | Not started | Confirm & Log into Breakfast / Lunch / Snacks / Dinner; Water on Tracking. Photo predict does not pick a meal slot until this ticket. |
+| **005** Log | Code done; 3 seed gaps | Confirm & Log into Breakfast / Lunch / Snacks / Dinner; Tracking date prev/next + water. Nutrition from `dish_nutrition` at insert (snapshot). CSV seeded from INDB (27/30); ghevar, jalebi, bhature empty. Predict still has no kcal. |
 
 Legacy Flask: `GET /predict` form, `POST /prediction1` upload. Diary (`/track`) was a separate page (four meals, no water).
 

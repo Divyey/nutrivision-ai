@@ -11,11 +11,11 @@ Product contracts (predict JSON, analyzing %, kcal on Scan) live in the root Cop
 ## Organization
 
 - `pages/` — screens (`LoginPage`, `DetectionPage`, and other `*Page` files).
-- `services/{Name}Service/{Name}Service.ts` — API clients. Today: `AuthService`, `UserService`, `DetectionService` (food predict client). Do not rename `DetectionService` to `FoodService` unless the ticket asks; the backend class is already `FoodService`.
+- `services/{Name}Service/{Name}Service.ts` — API clients. Today: `AuthService`, `UserService`, `DetectionService` (food predict client), `MealService` (diary). Do not rename `DetectionService` to `FoodService` unless the ticket asks; the backend class is already `FoodService`.
 - `components/layout/` — `AppLayout`, `PublicLayout`, `DetectionLayout`, `BottomNavigationBar`, `PageSpinner`.
 - There is no `components/ui/` folder. Do not create Ant Design wrapper folders (`Button.tsx`, `Form.tsx`, etc.). Use Ant Design primitives directly; put NutriVision-specific layout/widgets in `layout/` or next to the page that owns them.
 - `hooks/` — `useAuth` / `AuthProvider`. HTTP: `lib/http.ts`. JWT: `lib/token.ts` (sessionStorage).
-- `types/` — DTOs that match backend JSON (`auth.ts`, `user.ts`, `detection.ts`). Keep them in sync when the API changes.
+- `types/` — DTOs that match backend JSON (`auth.ts`, `user.ts`, `detection.ts`, `meals.ts`). Keep them in sync when the API changes.
 - Do not add `features/`, `container/`, `atoms/`, `molecules/`, or `organisms/`.
 - PascalCase for pages, services, and components; camelCase for hooks and utils.
 
@@ -40,7 +40,7 @@ Product contracts (predict JSON, analyzing %, kcal on Scan) live in the root Cop
 - Allow jpeg/png/webp only (`ALLOWED_IMAGE_TYPES`).
 - **Analyzing % is request UI**, not YOLO confidence. Do not bind it to `item.confidence`.
 - Results draw boxes from `payload.items`, positioned with `image_width` / `image_height`. No placeholder boxes. Captions may show label + rounded confidence.
-- Do not add kcal, portion, or meal-log UI on Scan / predict results unless the ticket includes it. Profile may already show `target_calories`; that is not Scan.
+- Results may offer meal-slot Confirm & Log. Do **not** show kcal/macros on Results. Diary kcal comes from server snapshots after log.
 - Honor `AbortSignal` when leaving or canceling analyze (`DetectionPage`).
 
 ## Config and quality

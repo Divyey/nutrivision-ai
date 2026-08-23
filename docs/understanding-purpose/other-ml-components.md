@@ -22,9 +22,9 @@ Search of the legacy project (`Code/`, notebooks, pickles, templates) besides fo
 
 ## 2. Nutritionix Track API
 
-**Not an ML model in this codebase.** External nutrition NLP/database. See `calorie-estimation.md` pipeline B.
+**Not an ML model.** External US-centric nutrition NLP. Legacy typed add-food called `POST https://trackapi.nutritionix.com/v2/natural/nutrients`. The PyPI `nutritionix` client was imported and unused.
 
-The `nutritionix` Python client is imported and unused.
+**005 does not call Nutritionix.** Production values for the 30 detect classes come from INDB in `backend/data/dish_nutrition.csv` (27 rows). ghevar, jalebi, and bhature stay empty until a cited fill exists. Live Nutritionix lookup is out of scope. Registry: `backend/data/DISH_NUTRITION.md`.
 
 ---
 
