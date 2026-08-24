@@ -142,8 +142,8 @@ backend/services/food/
   services/food_detector.py      # Protocol, Onnx, Fake, Unavailable, letterbox helpers
   services/food_classes.py       # id → slug only (no kcal)
 backend/scripts/export_food_onnx.py   # not imported by the app
-backend/models/food/best.pt            # export source (optional in git)
-backend/models/food/best.onnx          # served artifact
+backend/ml/models/food/best.pt         # export source (optional in git)
+backend/ml/models/food/best.onnx       # served artifact
 ```
 
 Settings: `FOOD_MODEL_PATH`, `FOOD_MAX_IMAGE_BYTES`, `FOOD_MAX_PIXELS`, `FOOD_CONFIDENCE_MIN=0.4`.
