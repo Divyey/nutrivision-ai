@@ -11,6 +11,7 @@ from core.health import collect_service_health, services_healthy
 from infrastructure.database import health as db_health
 from services.auth.routes.auth_routes import router as auth_router
 from services.food.routes.food_routes import router as food_router
+from services.nutrition.routes.nutrition_routes import router as nutrition_router
 from services.food.services.food_detector_service import (
     create_food_detector,
     get_food_detector,
@@ -84,6 +85,7 @@ app.include_router(auth_router, prefix=API_V1_PREFIX)
 app.include_router(users_router, prefix=API_V1_PREFIX)
 app.include_router(meals_router, prefix=API_V1_PREFIX)
 app.include_router(food_router, prefix=API_V1_PREFIX)
+app.include_router(nutrition_router, prefix=API_V1_PREFIX)
 
 
 @app.get("/health", tags=["health"], summary="Aggregate service health")

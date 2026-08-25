@@ -3,6 +3,7 @@ import {
   AppleOutlined,
   ClockCircleOutlined,
   DeleteOutlined,
+  EditOutlined,
   FunnelPlotOutlined,
   GoldOutlined,
   LeftOutlined,
@@ -13,7 +14,7 @@ import {
   ShoppingOutlined,
   SunOutlined,
 } from '@ant-design/icons'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import {
   App,
   Button,
@@ -33,11 +34,14 @@ import {
   MEAL_SLOT_LABELS,
   MEAL_SLOTS,
   displayFoodLabel,
+  formatFoodNumber,
   formatWeekdayDate,
   localDateString,
+  quantityInputWidthPx,
   resolveDiaryDate,
   shiftLocalDateString,
 } from '../../types/meals'
+import { AddFoodDrawer } from './AddFoodDrawer'
 import './tracking.css'
 
 function WaterDropIcon() {
@@ -111,8 +115,8 @@ function MacroBar({
           {label}
         </span>
         <Typography.Text type="secondary">
-          {consumed.toFixed(1)}
-          {target != null ? ` / ${target.toFixed(1)} g` : ' g'}
+          {formatFoodNumber(consumed, 1)}
+          {target != null ? ` / ${formatFoodNumber(target, 1)} g` : ' g'}
         </Typography.Text>
       </div>
       <Progress
@@ -129,7 +133,6 @@ function MacroBar({
 export function TrackingPage() {
   const { profile } = useAuth()
   const { message } = App.useApp()
-  const navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams()
   const today = localDateString()
   const date = resolveDiaryDate(searchParams.get('date'), today)
@@ -137,6 +140,8 @@ export function TrackingPage() {
   const [diary, setDiary] = useState<DiaryResponse | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [addSlot, setAddSlot] = useState<MealSlot | null>(null)
+  const [editEntry, setEditEntry] = useState<MealEntry | null>(null)
 
   useEffect(() => {
     const raw = searchParams.get('date')
@@ -204,7 +209,7 @@ export function TrackingPage() {
       void removeMeal(entry.id)
       return
     }
-    const next = Math.min(99, Math.max(1, Math.round((entry.quantity + delta) * 100) / 100))
+    const next = Math.max(1, Math.round((entry.quantity + delta) * 100) / 100)
     void changeQuantity(entry, next)
   }
 
@@ -240,8 +245,14 @@ export function TrackingPage() {
     }
   }
 
-  function openScan(slot: MealSlot) {
-    navigate(`/detect?slot=${slot}&date=${date}`)
+  function openAdd(slot: MealSlot) {
+    setEditEntry(null)
+    setAddSlot(slot)
+  }
+
+  function openEdit(entry: MealEntry) {
+    setAddSlot(null)
+    setEditEntry(entry)
   }
 
   const diaryStale = diary != null && diary.date !== date
@@ -308,9 +319,9 @@ export function TrackingPage() {
             trailColor="#e5e7eb"
             format={() => (
               <div className="tracking-kcal-label">
-                <div className="tracking-kcal-value">{totals.calories.toFixed(0)} kcal</div>
+                <div className="tracking-kcal-value">{formatFoodNumber(totals.calories)} kcal</div>
                 <div className="tracking-kcal-of">
-                  {calorieTarget != null ? `of ${calorieTarget.toFixed(0)} kcal` : 'consumed'}
+                  {calorieTarget != null ? `of ${formatFoodNumber(calorieTarget)} kcal` : 'consumed'}
                 </div>
               </div>
             )}
@@ -356,7 +367,7 @@ export function TrackingPage() {
                   {theme.icon}
                 </span>
                 <span>{MEAL_SLOT_LABELS[slot]}</span>
-                <Typography.Text type="secondary">{kcal.toFixed(0)} kcal</Typography.Text>
+                <Typography.Text type="secondary">{formatFoodNumber(kcal)} kcal</Typography.Text>
               </span>
             }
             extra={
@@ -365,7 +376,7 @@ export function TrackingPage() {
                 size="small"
                 className="tracking-add"
                 icon={<PlusOutlined />}
-                onClick={() => openScan(slot)}
+                onClick={() => openAdd(slot)}
               >
                 Add
               </Button>
@@ -377,7 +388,7 @@ export function TrackingPage() {
                 image={Empty.PRESENTED_IMAGE_SIMPLE}
                 description="Nothing logged. Add your first meal."
               >
-                <Button type="link" className="tracking-add" icon={<PlusOutlined />} onClick={() => openScan(slot)}>
+                <Button type="link" className="tracking-add" icon={<PlusOutlined />} onClick={() => openAdd(slot)}>
                   Add
                 </Button>
               </Empty>
@@ -387,8 +398,8 @@ export function TrackingPage() {
                   <div className="tracking-line-copy">
                     <Typography.Text strong>{displayFoodLabel(entry.label)}</Typography.Text>
                     <Typography.Paragraph type="secondary" className="tracking-line-macros">
-                      P {entry.protein.toFixed(1)} g · C {entry.carb.toFixed(1)} g · F{' '}
-                      {entry.fat.toFixed(1)} g · {entry.calories.toFixed(0)} kcal
+                      P {formatFoodNumber(entry.protein, 1)} g · C {formatFoodNumber(entry.carb, 1)} g · F{' '}
+                      {formatFoodNumber(entry.fat, 1)} g · {formatFoodNumber(entry.calories)} kcal
                     </Typography.Paragraph>
                     <div
                       className="tracking-qty"
@@ -404,10 +415,10 @@ export function TrackingPage() {
                       />
                       <InputNumber
                         min={0.01}
-                        max={99}
                         step={1}
                         controls={false}
                         value={entry.quantity}
+                        style={{ width: quantityInputWidthPx(entry.quantity) }}
                         aria-label={`Servings of ${displayFoodLabel(entry.label)}`}
                         onChange={(value) => void changeQuantity(entry, value)}
                       />
@@ -416,19 +427,26 @@ export function TrackingPage() {
                         size="small"
                         icon={<PlusOutlined />}
                         aria-label={`More ${displayFoodLabel(entry.label)}`}
-                        disabled={entry.quantity >= 99}
                         onClick={() => stepQuantity(entry, 1)}
                       />
-                      <span className="tracking-qty-unit">servings</span>
+                      <span className="tracking-qty-unit">{entry.unit ?? 'servings'}</span>
                     </div>
                   </div>
-                  <Button
-                    type="text"
-                    danger
-                    icon={<DeleteOutlined />}
-                    aria-label={`Remove ${displayFoodLabel(entry.label)}`}
-                    onClick={() => void removeMeal(entry.id)}
-                  />
+                  <div className="tracking-line-actions">
+                    <Button
+                      type="text"
+                      icon={<EditOutlined />}
+                      aria-label={`Edit ${displayFoodLabel(entry.label)}`}
+                      onClick={() => openEdit(entry)}
+                    />
+                    <Button
+                      type="text"
+                      danger
+                      icon={<DeleteOutlined />}
+                      aria-label={`Remove ${displayFoodLabel(entry.label)}`}
+                      onClick={() => void removeMeal(entry.id)}
+                    />
+                  </div>
                 </div>
               ))
             )}
@@ -471,6 +489,26 @@ export function TrackingPage() {
           ))
         )}
       </Card>
+
+      {addSlot ? (
+        <AddFoodDrawer
+          key={`add-${addSlot}`}
+          slot={addSlot}
+          date={date}
+          onClose={() => setAddSlot(null)}
+          onLogged={load}
+        />
+      ) : null}
+      {editEntry ? (
+        <AddFoodDrawer
+          key={`edit-${editEntry.id}`}
+          slot={editEntry.slot}
+          date={date}
+          entry={editEntry}
+          onClose={() => setEditEntry(null)}
+          onLogged={load}
+        />
+      ) : null}
     </div>
   )
 }

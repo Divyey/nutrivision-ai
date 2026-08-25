@@ -20,11 +20,11 @@ Code lives under `backend/services/{domain}/`:
 | schema | `{domain}_schema.py` |
 | middleware | `{domain}_middleware.py` (auth only today) |
 
-Do not name a layer file after the domain only (`auth.py`). Extra modules keep the domain prefix (`food_detector_service.py`, `food_classes_service.py`, `users_goals_service.py`).
+Do not name a layer file after the domain only (`auth.py`). Extra modules keep the domain prefix (`food_detector_service.py`, `food_classes_service.py`, `users_goals_service.py`, `nutrition_catalog_seed.py`, `nutrition_macros_service.py`).
 
-Health checks are **not** a layer folder. Put `{domain}_health.py` in that domain’s `services/` directory (`auth_health.py`, `users_health.py`, `food_health.py`).
+Health checks are **not** a layer folder. Put `{domain}_health.py` in that domain’s `services/` directory (`auth_health.py`, `users_health.py`, `food_health.py`, `nutrition_health.py`).
 
-`main.py` mounts routers with `API_V1_PREFIX = "/api/v1"`. Domain routers already use `prefix="/auth"`, `"/users"`, `"/food"`, `"/meals"`.
+`main.py` mounts routers with `API_V1_PREFIX = "/api/v1"`. Domain routers already use `prefix="/auth"`, `"/users"`, `"/food"`, `"/meals"`, `"/nutrition"`.
 
 ## Request path
 
@@ -45,7 +45,7 @@ Health checks are **not** a layer folder. Put `{domain}_health.py` in that domai
 
 - Env: `DATABASE_URL`, `JWT_SECRET_KEY`, optional `FOOD_*`. Python: `from core.config import settings` then `settings.database_url`, `settings.jwt_secret_key`, `settings.food_detector` (not `settings.DATABASE_URL`).
 - Logging: `logging.getLogger("nutrivision")`. Never log tokens, passwords, or `DATABASE_URL`.
-- Domain errors (`AuthError`, `UsersError`, `FoodError`, `MealsError`) expose `status_code` and `detail`; controllers map them to `HTTPException`. Missing `dish_nutrition` for a logged `class_id` is 400.
+- Domain errors (`AuthError`, `UsersError`, `FoodError`, `MealsError`, `NutritionError`) expose `status_code` and `detail`; controllers map them to `HTTPException`. Missing `dish_nutrition` for a logged `class_id` is 400.
 
 ## Database
 
@@ -56,7 +56,7 @@ Health checks are **not** a layer folder. Put `{domain}_health.py` in that domai
 ## Health
 
 - Each service owns `{name}_health.py` in that domain’s `services/` folder. `"status": "healthy" | "unhealthy"`. No secrets in payloads.
-- Register **auth**, **users**, and **meals** in `core.health.SERVICE_CHECKS`. `GET /health` is 503 if the database or a registered check fails.
+- Register **auth**, **users**, **meals**, and **nutrition** in `core.health.SERVICE_CHECKS`. `GET /health` is 503 if the database or a registered check fails.
 - Food model readiness is `GET /api/v1/food/health` only. Do not add food to `SERVICE_CHECKS` unless the ticket changes that split.
 
 ## Auth / JWT
@@ -67,7 +67,7 @@ Health checks are **not** a layer folder. Put `{domain}_health.py` in that domai
 ## Tests
 
 - `tests/conftest.py` sets `FOOD_DETECTOR=fake` before importing the app so CI never loads ONNX.
-- Cover new endpoints and important branches (auth, validation, empty `items`, 503). Follow `test_auth.py`, `test_users.py`, `test_food.py`, `test_meals.py`, `test_health.py`.
+- Cover new endpoints and important branches (auth, validation, empty `items`, 503). Follow `test_auth.py`, `test_users.py`, `test_food.py`, `test_meals.py`, `test_nutrition.py`, `test_health.py`.
 
 ## Food / inference (current design)
 

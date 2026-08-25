@@ -36,6 +36,8 @@ Writes 27 INDB rows, **deletes** leftover dummy rows for class_ids 4/8/12, and *
 
 Incomplete rows (all five numeric cells empty) are skipped. A row with only some numbers filled is an error. This is **not** an Alembic data migration. Alembic `0004` creates empty `dish_nutrition` / `meal_entries` / `water_entries` tables only.
 
+The searchable catalog (006) is separate: [`FOODS.md`](FOODS.md). Do not copy the full INDB xlsx into Postgres.
+
 ## Snapshots vs PATCH
 
 Diary kcal come from `meal_entries` columns written at insert time:

@@ -19,3 +19,8 @@ def check_database() -> bool:
     except Exception:
         logger.error("Database health check failed")
         return False
+
+
+def database_health() -> dict[str, str]:
+    status = "healthy" if check_database() else "unhealthy"
+    return {"status": status, "database": status}

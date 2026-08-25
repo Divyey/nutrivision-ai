@@ -1,0 +1,32 @@
+---
+description: Review and simplify code — drop duplicates, dead paths, extra layers
+alwaysApply: true
+---
+
+# Code review and cleanup
+
+Apply on every change. Prefer a smaller diff that keeps behavior.
+
+**Review**
+- Match this repo’s layers and names. Do not add a new folder, framework, or state library.
+- Flag contract breaks, missing tests, secrets, and unused paths. Do not nitpick style that already matches the file.
+- Do not expand the ticket while reviewing.
+
+**Cleanup (do it, don’t only comment)**
+- Delete dead code, unused imports, and wrappers used once.
+- One helper, not copy-paste. Reuse `check_database` / existing services — do not fork them.
+- Shortest version that keeps tests green. Do not “simplify” by adding an abstraction used in one place.
+
+```text
+# extra layer for a single call
+def search():
+    return _run(service.search)          ❌
+
+def search():
+    try:
+        return service.search(...)       ✅
+    except DomainError as exc:
+        raise HTTPException(...) from exc
+```
+
+Leave commented-out code, unused flags, and duplicate CSV/xlsx parsers out of the PR.
