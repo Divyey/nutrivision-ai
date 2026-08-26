@@ -28,6 +28,13 @@ python scripts/upsert_dish_nutrition.py
 
 See [`data/DISH_NUTRITION.md`](data/DISH_NUTRITION.md) for snapshot vs PATCH behavior.
 
+Foods catalog (006, nutrition search; Scan still uses `dish_nutrition`): [`data/FOODS.md`](data/FOODS.md).
+
+```bash
+python scripts/upsert_foods_catalog.py --dry-run
+python scripts/upsert_foods_catalog.py
+```
+
 ## FastAPI Cloud
 
 Public API: https://nutrivision-ai-backend.fastapicloud.dev/

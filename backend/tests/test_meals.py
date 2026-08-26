@@ -243,3 +243,172 @@ def test_empty_items_rejected(client, db_session):
         headers=headers,
     )
     assert response.status_code == 422
+
+
+def test_typed_log_requires_food_or_class(client):
+    headers = auth_headers(client)
+    response = client.post(
+        ENTRIES,
+        json={"logged_on": DAY, "slot": "lunch", "items": [{"quantity": 1}]},
+        headers=headers,
+    )
+    assert response.status_code == 422
+
+
+def test_typed_log_roti_and_patch(client, db_session):
+    from infrastructure.database.models.food import Food
+    from services.nutrition.services.nutrition_catalog_seed import (
+        DEFAULT_CSV,
+        load_catalog_rows,
+        upsert_catalog,
+    )
+
+    db = db_session()
+    try:
+        upsert_catalog(db, load_catalog_rows(DEFAULT_CSV))
+        roti = db.query(Food).filter(Food.slug == "roti").one()
+        roti_id = str(roti.id)
+        default_unit = next(row.unit for row in roti.servings if row.is_default)
+    finally:
+        db.close()
+
+    headers = auth_headers(client)
+    created = client.post(
+        ENTRIES,
+        json={
+            "logged_on": DAY,
+            "slot": "breakfast",
+            "items": [
+                {"food_id": roti_id, "unit": default_unit, "quantity": 2},
+            ],
+        },
+        headers=headers,
+    )
+    assert created.status_code == 201
+    body = created.json()[0]
+    assert body["source"] == "typed"
+    assert body["class_id"] is None
+    assert body["food_id"] == roti_id
+    assert body["unit"] == default_unit
+    assert body["calories"] > 0
+
+    patched = client.patch(
+        f"{ENTRIES}/{body['id']}", json={"quantity": 1}, headers=headers
+    )
+    assert patched.status_code == 200
+    assert patched.json()["quantity"] == 1
+    assert patched.json()["calories"] < body["calories"]
+
+    grams = client.post(
+        ENTRIES,
+        json={
+            "logged_on": DAY,
+            "slot": "lunch",
+            "items": [{"food_id": roti_id, "unit": "g", "quantity": 150}],
+        },
+        headers=headers,
+    )
+    assert grams.status_code == 201
+    assert grams.json()[0]["quantity"] == 150
+
+    large = client.patch(
+        f"{ENTRIES}/{body['id']}", json={"unit": "large"}, headers=headers
+    )
+    assert large.status_code == 200
+    assert large.json()["unit"] == "large"
+    assert large.json()["calories"] > patched.json()["calories"]
+
+    idli = db_session()
+    try:
+        idli_id = str(idli.query(Food).filter(Food.slug == "idli").one().id)
+    finally:
+        idli.close()
+    swapped = client.patch(
+        f"{ENTRIES}/{body['id']}",
+        json={"food_id": idli_id, "unit": "piece", "quantity": 1},
+        headers=headers,
+    )
+    assert swapped.status_code == 200
+    assert swapped.json()["food_id"] == idli_id
+    assert swapped.json()["unit"] == "piece"
+    assert swapped.json()["label"] == "idli"
+    assert swapped.json()["source"] == "typed"
+
+    missing_unit = client.patch(
+        f"{ENTRIES}/{body['id']}", json={"food_id": idli_id}, headers=headers
+    )
+    assert missing_unit.status_code == 422
+
+
+def test_patch_scan_unit_requires_catalog_food(client, db_session):
+    _seed_fake_nutrition(db_session)
+    headers = auth_headers(client)
+    entry_id = client.post(
+        ENTRIES, json=_log_payload(quantity=1), headers=headers
+    ).json()[0]["id"]
+    response = client.patch(
+        f"{ENTRIES}/{entry_id}", json={"unit": "piece"}, headers=headers
+    )
+    assert response.status_code == 400
+    assert "catalog" in response.json()["detail"].lower()
+
+
+def test_patch_scan_to_typed_catalog(client, db_session):
+    from infrastructure.database.models.food import Food
+    from services.nutrition.services.nutrition_catalog_seed import (
+        DEFAULT_CSV,
+        load_catalog_rows,
+        upsert_catalog,
+    )
+
+    _seed_fake_nutrition(db_session)
+    db = db_session()
+    try:
+        upsert_catalog(db, load_catalog_rows(DEFAULT_CSV))
+        idli_id = str(db.query(Food).filter(Food.slug == "idli").one().id)
+    finally:
+        db.close()
+
+    headers = auth_headers(client)
+    entry_id = client.post(
+        ENTRIES, json=_log_payload(quantity=1), headers=headers
+    ).json()[0]["id"]
+    response = client.patch(
+        f"{ENTRIES}/{entry_id}",
+        json={"food_id": idli_id, "unit": "piece", "quantity": 1},
+        headers=headers,
+    )
+    assert response.status_code == 200
+    body = response.json()
+    assert body["source"] == "typed"
+    assert body["food_id"] == idli_id
+    assert body["unit"] == "piece"
+    assert body["label"] == "idli"
+
+
+def test_typed_log_incomplete_food_returns_400(client, db_session):
+    from infrastructure.database.models.food import Food
+    from services.nutrition.services.nutrition_catalog_seed import (
+        DEFAULT_CSV,
+        load_catalog_rows,
+        upsert_catalog,
+    )
+
+    db = db_session()
+    try:
+        upsert_catalog(db, load_catalog_rows(DEFAULT_CSV))
+        ghevar_id = str(db.query(Food).filter(Food.slug == "ghevar").one().id)
+    finally:
+        db.close()
+
+    headers = auth_headers(client)
+    response = client.post(
+        ENTRIES,
+        json={
+            "logged_on": DAY,
+            "slot": "snacks",
+            "items": [{"food_id": ghevar_id, "unit": "serving", "quantity": 1}],
+        },
+        headers=headers,
+    )
+    assert response.status_code == 400

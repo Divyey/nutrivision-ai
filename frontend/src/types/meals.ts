@@ -9,11 +9,19 @@ export const MEAL_SLOT_LABELS: Record<MealSlot, string> = {
   dinner: 'Dinner',
 }
 
-/** Number of default servings. 1 = dish_nutrition.default_serving_grams grams. */
-export type MealItemInput = {
+/** Scan: count of default servings. Typed: count of `unit`. */
+export type ScanMealItemInput = {
   class_id: number
   quantity: number
 }
+
+export type TypedMealItemInput = {
+  food_id: string
+  unit: string
+  quantity: number
+}
+
+export type MealItemInput = ScanMealItemInput | TypedMealItemInput
 
 export type LogMealsRequest = {
   logged_on: string
@@ -24,6 +32,8 @@ export type LogMealsRequest = {
 export type PatchMealEntryRequest = {
   quantity?: number
   slot?: MealSlot
+  food_id?: string
+  unit?: string
 }
 
 export type LogWaterRequest = {
@@ -36,7 +46,9 @@ export type MealEntry = {
   logged_on: string
   slot: MealSlot
   source: string
-  class_id: number
+  class_id: number | null
+  food_id: string | null
+  unit: string | null
   label: string
   quantity: number
   calories: number
@@ -136,6 +148,19 @@ export function displayFoodLabel(slug: string): string {
     .split('-')
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(' ')
+}
+
+/** Width so InputNumber can show the full quantity (the old 48px box clipped 999999 to "99"). */
+export function quantityInputWidthPx(quantity: number): number {
+  const text = Number.isInteger(quantity) ? String(Math.trunc(quantity)) : String(quantity)
+  return Math.min(160, Math.max(64, 14 + text.length * 9))
+}
+
+export function formatFoodNumber(value: number, fractionDigits = 0): string {
+  return value.toLocaleString('en-US', {
+    maximumFractionDigits: fractionDigits,
+    minimumFractionDigits: fractionDigits,
+  })
 }
 
 export function isMealSlot(value: string | null): value is MealSlot {
