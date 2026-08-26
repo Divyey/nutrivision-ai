@@ -1,38 +1,55 @@
-## Ticket
+## Summary
 
-NV-___: <ticket title>
+NV-XXX
 
-## Self-review
+<!-- What changed and why. Ticket id if there is one. -->
 
-- [ ] Diff matches the ticket scope. No drive-by changes, unrelated refactors, old migration edits, datasets, rules, or generated files.
-- [ ] Naming, structure, and layering follow repository conventions.
-- [ ] Existing API/data contracts are unchanged unless intentionally modified by this ticket.
-- [ ] Dead code, unused imports, duplicate logic, and unnecessary abstractions are removed.
-- [ ] Tests cover the changed behavior and existing tests pass.
-- [ ] UI changes were verified in the browser, or the limitation is documented below.
-- [ ] Database changes include the required migration; historical migrations were not modified unnecessarily.
+## Type
 
-## Services touched
+- [ ] Feature
+- [ ] Fix
+- [ ] Docs
+- [ ] CI / CD
+- [ ] Release (`development` → `production`)
+- [ ] Chore / other
 
-Check only what this PR changes:
+## Scope
 
-- [ ] **auth**
-- [ ] **users**
-- [ ] **food**
-- [ ] **nutrition**
-- [ ] **meals**
-- [ ] **frontend**
+- [ ] Diff matches this PR. No drive-by refactors, old migration edits, datasets, or generated files.
+- [ ] Naming and layering follow this repo.
+- [ ] Public API / DB contracts are unchanged, or the break is called out below.
+- [ ] Dead code and one-off wrappers are gone.
+- [ ] Tests cover new behavior, or none were needed (say why in Notes).
+
+## Areas
+
+Check what this PR actually changes:
+
+- [ ] Frontend
+- [ ] auth - Authentication Service
+- [ ] users - Users Service
+- [ ] food - Food Service
+- [ ] nutrition - Nutrition Service
+- [ ] meals - Meals Service
+- [ ] Database / migrations
+- [ ] CI / CD (GitHub Actions, Vercel, FastAPI Cloud)
+- [ ] Docs / config examples
 
 ## Verification
 
-- Backend: `________`
-- Frontend: `________`
-- Database / migration: `________`
-- Manual / browser: `________`
+Check what you actually ran. Unchecked means not done.
+
+- [ ] Backend tests (`pytest`)
+- [ ] Frontend lint / typecheck
+- [ ] UI checked in the browser
+- [ ] Preview or production deploy checked
+
+## Release (only for `development` → `production`)
+
+- [ ] Intended for production
+- [ ] Env / CORS / secrets already set on Vercel and FastAPI Cloud, or this PR updates the docs/examples
+- [ ] After merge, production app and API behave as expected
 
 ## Notes
 
-<!--
-Mention important implementation decisions, known limitations,
-deferred work, or anything reviewers should specifically check.
--->
+<!-- Decisions, limitations, follow-ups, contract breaks, preview URLs. -->

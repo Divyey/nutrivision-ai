@@ -13,7 +13,12 @@ Screens: public Home / Login / Register; signed-in Dashboard, Profile, Scan (`/d
 
 ## Vercel
 
-Production: https://nutrivision-ai-green.vercel.app/
+| Env | Branch | URL |
+|---|---|---|
+| Production | `production` | https://prod-nutrivision-ai.vercel.app |
+| Development | `development` | https://dev-nutrivision-ai.vercel.app |
 
-Set the project **Root Directory** to `frontend`. Set `VITE_API_BASE_URL` to `https://nutrivision-ai-backend.fastapicloud.dev`. Put `VERCEL_TOKEN`, `VERCEL_ORG_ID`, and `VERCEL_PROJECT_ID` in GitHub Actions secrets. `VERCEL_TOKEN` must be a **team or account** token for `divyeys-projects`, not a project-only `vcp_…` token. `VERCEL_ORG_ID` (`team_…`) belongs in project settings, not in `vercel --scope`. `vercel.json` turns off Vercel Git auto-deploy so Actions owns deploys: preview from `development` / PRs, production from `production`.
+GitHub Actions deploys Preview from `development` and Production from `production`. Production uses `vercel deploy --prod --skip-domain` then `vercel promote` because auto-assign custom production domains is off. Dashboard **Production Branch** should be `production` when Vercel lets you save it.
+
+Set the project **Root Directory** to `frontend`. Set `VITE_API_BASE_URL` to `https://nutrivision-ai-backend.fastapicloud.dev`. Put `VERCEL_TOKEN`, `VERCEL_ORG_ID`, and `VERCEL_PROJECT_ID` in GitHub Actions secrets.
 
