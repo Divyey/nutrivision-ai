@@ -1,6 +1,8 @@
 ## Summary
 
-<!-- What changed and why. Ticket id if there is one (e.g. NV-007). -->
+NV-XXX
+
+<!-- What changed and why. Ticket id if there is one. -->
 
 ## Type
 
