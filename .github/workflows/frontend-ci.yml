@@ -1,6 +1,7 @@
 # Frontend CI on development + production.
-# Vercel preview: PRs and pushes to `development`.
-# Vercel production: pushes to `production`.
+# Vercel preview: PRs and pushes to `development` → https://dev-nutrivision-ai.vercel.app
+# Vercel production: pushes to `production` → promote so
+#   https://prod-nutrivision-ai.vercel.app and https://nutrivision-ai-green.vercel.app move.
 # Official pattern: https://vercel.com/kb/guide/how-can-i-use-github-actions-with-vercel
 #
 # GitHub secrets:
@@ -14,8 +15,8 @@
 # Vercel project env:
 #   VITE_API_BASE_URL  — https://nutrivision-ai-backend.fastapicloud.dev
 #
-# Disable Vercel Git auto-deploy (vercel.json git.deploymentEnabled) so Actions
-# is the only deployer.
+# Git auto-deploy is off (vercel.json). Production domains are environment-bound
+# with auto-assign disabled, so --prod must skip-domain then promote.
 
 name: Frontend CI
 
@@ -96,4 +97,5 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: |
           rm -rf .vercel frontend/.vercel
-          vercel deploy --prod --yes --token="$VERCEL_TOKEN"
+          url="$(vercel deploy --prod --skip-domain --yes --token="$VERCEL_TOKEN")"
+          vercel promote "$url" --yes --token="$VERCEL_TOKEN"

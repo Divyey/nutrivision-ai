@@ -41,7 +41,7 @@ Public API: https://nutrivision-ai-backend.fastapicloud.dev/
 
 CI runs `fastapi deploy backend` from the repo root, so the uploaded app root is `backend/` (`main.py`, `pyproject.toml`). In the FastAPI Cloud dashboard, leave **Application Directory empty**. If it is set to `backend`, the builder looks for `backend/backend` and fails with `No such file or directory`.
 
-Configure `DATABASE_URL`, `JWT_SECRET_KEY`, and `CORS_ORIGINS` (must include https://nutrivision-ai-green.vercel.app). Food settings (`FOOD_MODEL_PATH`, `FOOD_DETECTOR`, image limits) are optional — defaults are in `core/config.py`.
+Configure `DATABASE_URL`, `JWT_SECRET_KEY`, and `CORS_ORIGINS` (must include https://prod-nutrivision-ai.vercel.app and https://dev-nutrivision-ai.vercel.app). Food settings (`FOOD_MODEL_PATH`, `FOOD_DETECTOR`, image limits) are optional — defaults are in `core/config.py`.
 
 Run **one** uvicorn worker. Measured RSS after loading `best.onnx` and one 640×480 predict is **~300 MB** (see `ml/models/food/EXPORT.md`). Start Cloud at **1 GB** until larger photos are measured; do not assume 2 GB. Do not install torch or ultralytics on FastAPI Cloud. Export ONNX locally:
 

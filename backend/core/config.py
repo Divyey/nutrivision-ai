@@ -20,7 +20,9 @@ class Settings(BaseSettings):
         "http://localhost:5173,"
         "http://127.0.0.1:5173,"
         "https://nutrivision-ai-green.vercel.app,"
-        "https://nutrivision-ai-divyeys-projects.vercel.app"
+        "https://nutrivision-ai-divyeys-projects.vercel.app,"
+        "https://dev-nutrivision-ai.vercel.app,"
+        "https://prod-nutrivision-ai.vercel.app"
     )
 
     # Optional FOOD_* overrides. Unset → these defaults (exported ONNX at imgsz 800).
