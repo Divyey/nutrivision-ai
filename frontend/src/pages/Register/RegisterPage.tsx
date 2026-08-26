@@ -13,7 +13,14 @@ export function RegisterPage() {
   const [submitting, setSubmitting] = useState(false)
 
   return (
-    <Card title="Create an account" className="auth-card">
+    <Card className="auth-card">
+      <Typography.Title level={3} className="auth-card-title">
+        Create an account
+      </Typography.Title>
+      <Typography.Paragraph type="secondary" className="auth-card-lead">
+        After this we ask a few body details so calorie goals have somewhere to land. Then you can
+        Scan a plate and log it on Tracking.
+      </Typography.Paragraph>
       <Form
         form={form}
         layout="vertical"
@@ -57,8 +64,8 @@ export function RegisterPage() {
           <Input.Password autoComplete="new-password" />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" block loading={submitting}>
-            Register
+          <Button type="primary" htmlType="submit" block loading={submitting} className="home-cta">
+            Create account
           </Button>
         </Form.Item>
       </Form>
