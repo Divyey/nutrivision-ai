@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { CameraOutlined } from '@ant-design/icons'
+import { CameraOutlined, EditOutlined, LogoutOutlined } from '@ant-design/icons'
 import { App, Avatar, Button, Card, Col, Divider, Form, Row, Space, Statistic, Typography } from 'antd'
 
 import { useNavigate } from 'react-router-dom'
@@ -85,7 +85,12 @@ export function ProfilePage() {
               </Button>
             </Space>
           ) : (
-            <Button type="primary" htmlType="button" onClick={() => setEditing(true)}>
+            <Button
+              type="primary"
+              htmlType="button"
+              icon={<EditOutlined />}
+              onClick={() => setEditing(true)}
+            >
               Edit Profile
             </Button>
           )}
@@ -114,6 +119,7 @@ export function ProfilePage() {
       <Button
         danger
         htmlType="button"
+        icon={<LogoutOutlined />}
         className="profile-logout"
         onClick={() => {
           logout()
