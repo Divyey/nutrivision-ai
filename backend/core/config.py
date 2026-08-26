@@ -24,7 +24,7 @@ class Settings(BaseSettings):
     )
 
     # Optional FOOD_* overrides. Unset → these defaults (exported ONNX at imgsz 800).
-    food_model_path: str = str(ROOT_DIR / "models" / "food" / "best.onnx")
+    food_model_path: str = str(ROOT_DIR / "ml" / "models" / "food" / "best.onnx")
     food_max_image_bytes: int = 8 * 1024 * 1024
     food_max_pixels: int = 20_000_000
     food_confidence_min: float = 0.4

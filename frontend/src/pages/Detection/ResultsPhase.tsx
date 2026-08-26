@@ -104,7 +104,7 @@ export function ResultsPhase({ previewUrl, payload, onRetake }: ResultsPhaseProp
     setDishes((rows) =>
       rows.map((row) =>
         row.class_id === classId
-          ? { ...row, quantity: Math.min(99, Math.max(1, row.quantity + delta)) }
+          ? { ...row, quantity: Math.max(1, row.quantity + delta) }
           : row,
       ),
     )
@@ -209,7 +209,6 @@ export function ResultsPhase({ previewUrl, payload, onRetake }: ResultsPhaseProp
                     size="small"
                     icon={<PlusOutlined />}
                     aria-label={`More ${displayFoodLabel(dish.label)}`}
-                    disabled={dish.quantity >= 99}
                     onClick={() => changeQuantity(dish.class_id, 1)}
                   />
                 </div>

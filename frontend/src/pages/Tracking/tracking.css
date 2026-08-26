@@ -49,11 +49,13 @@
 
 .tracking-kcal-label {
   line-height: 1.2;
+  padding-inline: 6px;
 }
 
 .tracking-kcal-value {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
+  overflow-wrap: anywhere;
 }
 
 .tracking-kcal-of {
@@ -90,6 +92,7 @@
 .tracking-slot-title {
   display: inline-flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 8px;
 }
 
@@ -145,15 +148,24 @@
   flex: 1;
 }
 
+.tracking-line-actions {
+  display: inline-flex;
+  align-items: flex-start;
+  flex-shrink: 0;
+}
+
 .tracking-line-macros {
   margin-bottom: 8px !important;
   font-size: 12px;
+  overflow-wrap: anywhere;
 }
 
 .tracking-qty {
   display: inline-flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 4px;
+  max-width: 100%;
   padding: 2px 8px 2px 4px;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 999px;
@@ -161,7 +173,7 @@
 }
 
 .tracking-qty .ant-input-number {
-  width: 48px;
+  min-width: 64px;
 }
 
 .tracking-qty .ant-input-number-input {
@@ -188,6 +200,34 @@
 .tracking-water-add.ant-btn-primary:focus-visible {
   background: #1d4ed8 !important;
   border-color: #1d4ed8 !important;
+}
+
+.tracking-food-list {
+  margin-top: 12px;
+  max-height: 40vh;
+  overflow: auto;
+}
+
+.tracking-food-hit {
+  cursor: pointer;
+}
+
+.tracking-food-hit-active {
+  background: #f6ffed;
+}
+
+.tracking-food-log {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.tracking-food-log-row {
+  display: flex;
+  gap: 8px;
 }
 
 @media (max-width: 480px) {

@@ -4,20 +4,21 @@ from datetime import date as Date
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
-from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
 from core.event_log import elapsed_ms, log_event, short_id
+from core.health import service_health_http
 from infrastructure.database.models.user import User
 from infrastructure.database.session import get_db
 from services.auth.middleware.auth_middleware import get_current_user
-from services.food.services.food_classes_service import foods_log_line_from_items
+from services.food.services.food_classes_service import label_for_class_id
 from services.meals.controller import meals_controller
 from services.meals.schema.meals_schema import (
     DiaryResponse,
     LogMealsRequest,
     LogWaterRequest,
     MealEntryResponse,
+    MealItemInput,
     PatchMealEntryRequest,
     WaterEntryResponse,
 )
@@ -28,13 +29,20 @@ logger = logging.getLogger("nutrivision")
 router = APIRouter(prefix="/meals", tags=["meals"])
 
 
+def _create_foods_line(items: list[MealItemInput]) -> str:
+    parts: list[str] = []
+    for item in items:
+        if item.class_id is not None:
+            label = label_for_class_id(item.class_id) or str(item.class_id)
+            parts.append(f"{label} ×{item.quantity}")
+        elif item.food_id is not None:
+            parts.append(f"{item.food_id} ×{item.quantity}")
+    return ", ".join(parts) if parts else "(none)"
+
+
 @router.get("/health", summary="Meals service health")
 def meals_health():
-    result = check_meals_health()
-    payload = {"service": "meals", **result}
-    if result["status"] == "healthy":
-        return payload
-    return JSONResponse(status_code=503, content=payload)
+    return service_health_http("meals", check_meals_health())
 
 
 @router.get(
@@ -71,7 +79,7 @@ def read_diary(
     "/entries",
     response_model=list[MealEntryResponse],
     status_code=status.HTTP_201_CREATED,
-    summary="Confirm and log detected foods into a meal slot",
+    summary="Log scan detections or a typed catalog food into a meal slot",
 )
 def create_entries(
     payload: LogMealsRequest,
@@ -80,9 +88,7 @@ def create_entries(
 ) -> list[MealEntryResponse]:
     started = time.perf_counter()
     user_key = str(user.id)
-    foods = foods_log_line_from_items(
-        [(meal_item.class_id, meal_item.quantity) for meal_item in payload.items]
-    )
+    foods = _create_foods_line(payload.items)
     try:
         created = meals_controller.log_meals(payload, user, db)
     except HTTPException as exc:
@@ -120,7 +126,7 @@ def create_entries(
 @router.patch(
     "/entries/{entry_id}",
     response_model=MealEntryResponse,
-    summary="Update quantity and/or meal slot",
+    summary="Update quantity, catalog food, unit, and/or meal slot",
 )
 def patch_entry(
     entry_id: UUID,

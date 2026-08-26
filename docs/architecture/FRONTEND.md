@@ -1,6 +1,6 @@
 # Frontend architecture plan
 
-**Status:** Auth (001), profile/goals (002), food-recognition UI (003), food **prediction API** (004, detections only), and food **tracking / diary** (005) are implemented. Prediction feedback is not.
+**Status:** Auth (001), profile/goals (002), food-recognition UI (003), food **prediction API** (004, detections only), food **tracking / diary** (005), and food **catalog search + typed Add** (006) are implemented. Prediction feedback is not.
 
 ---
 
@@ -123,11 +123,12 @@ Do **not** add later:
 - Food recognition UI (003): `DetectionLayout` + `pages/Detection/`, `DetectionService`
 - Food prediction (004): ONNX `POST /api/v1/food/predict`; Results maps boxes, labels, confidence (not kcal)
 - Food tracking (005): Confirm & Log + Tracking diary (four slots + water). `MealService` → `/api/v1/meals/*`. Snapshots from `dish_nutrition` at write time. CSV has 27 INDB rows; ghevar, jalebi, and bhature are empty (log returns 400).
+- Canonical catalog (006): `NutritionService` → `GET /api/v1/nutrition/search` (and GET-by-id for edit). Tracking **Add** / pencil searches the catalog and logs `source=typed`. Scan Confirm & Log still uses `dish_nutrition`.
 - App shell: `BottomNavigationBar` — Home | Recommend | Scan | Tracking | Progress. `/detect` hides the bar.
 
 **Not implemented (do not fake APIs):**
 
-- 006 — prediction thumbs up/down
+- 009 — prediction thumbs up/down
 - Cited per-100g values for ghevar, jalebi, and bhature (class_ids 4, 8, 12)
 
 Recommend / Progress routes exist as placeholders only.
@@ -153,7 +154,7 @@ frontend/src/
 │   ├── UserService/           → backend/services/users/
 │   ├── DetectionService/      → POST /api/v1/food/predict (004)
 │   ├── FoodService/           → services/food/          (later)
-│   ├── NutritionService/      → services/nutrition/     (later)
+│   ├── NutritionService/      → GET /api/v1/nutrition/search (006)
 │   ├── MealService/           → services/meals/         (005)
 │   └── RecommendationService/ → services/recommendations/ (later)
 ├── pages/
@@ -162,7 +163,7 @@ frontend/src/
 │   ├── Register/RegisterPage.tsx
 │   ├── Dashboard/DashboardPage.tsx
 │   ├── Detection/DetectionPage.tsx    # 003 UI; Results mapping is 004
-│   ├── Tracking/TrackingPage.tsx      # 005 diary (today + water)
+│   ├── Tracking/TrackingPage.tsx      # 005 diary + 006 typed search Add
 │   ├── Progress/ProgressPage.tsx      # placeholder
 │   ├── Profile/ProfilePage.tsx
 │   └── Recommendation/RecommendationPage.tsx  # placeholder

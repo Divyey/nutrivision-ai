@@ -1,4 +1,4 @@
-"""Dev-only: export models/food/best.pt to best.onnx.
+"""Dev-only: export ml/models/food/best.pt to best.onnx.
 
 Not imported by the FastAPI app. Requires a separate venv with ultralytics+torch.
 """
@@ -12,8 +12,8 @@ import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-DEFAULT_PT = ROOT / "models" / "food" / "best.pt"
-DEFAULT_ONNX = ROOT / "models" / "food" / "best.onnx"
+DEFAULT_PT = ROOT / "ml" / "models" / "food" / "best.pt"
+DEFAULT_ONNX = ROOT / "ml" / "models" / "food" / "best.onnx"
 IMGSZ = 800
 CONF_MIN = 0.4
 
@@ -80,7 +80,7 @@ def main() -> int:
         "export_seconds": round(elapsed, 2),
         "session": inspect_onnx(onnx_path),
     }
-    notes = ROOT / "models" / "food" / "EXPORT.md"
+    notes = ROOT / "ml" / "models" / "food" / "EXPORT.md"
     notes.write_text(_render_notes(meta), encoding="utf-8")
     print(json.dumps(meta, indent=2))
     print(f"wrote {notes}")

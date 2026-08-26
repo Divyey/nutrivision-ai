@@ -175,11 +175,12 @@ def test_map_to_original_pixel_uses_letterbox_geometry():
 
 
 def test_relative_food_model_path_joins_backend_root(monkeypatch):
-    monkeypatch.setattr(settings, "food_model_path", "models/food/best.onnx")
+    monkeypatch.setattr(settings, "food_model_path", "ml/models/food/best.onnx")
     model_path = settings.resolved_food_model_path
     assert model_path.is_absolute()
     assert model_path.name == "best.onnx"
     assert model_path.parent.name == "food"
+    assert model_path.parts[-4:] == ("ml", "models", "food", "best.onnx")
 
 
 def test_letterbox_output_shape():

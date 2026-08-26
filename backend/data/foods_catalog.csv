@@ -1,0 +1,92 @@
+slug,name,detect_class_id,status,calories_per_100g,protein_per_100g,carb_per_100g,fat_per_100g,density_g_per_ml,source_dataset,source_id,source_note,aliases,indb_serving_unit,default_serving_grams
+aloo-gobi,aloo gobi,0,complete,106.18,1.90,5.99,8.13,,indb,ASC171,INDB ASC171 Potato cauliflower (Aloo gobhi),"aloo gobi,aloo gobhi,aloo gobi,potato cauliflower",bowl,175.75
+aloo-fry,aloo fry,1,complete,103.15,1.62,14.38,4.18,,indb,ASC178,INDB ASC178 Dry potato (Sookhe aloo) (dry potato; closest to aloo-fry),aloo fry,bowl,105.75
+dum-aloo,dum aloo,2,complete,89.56,1.52,10.42,4.47,,indb,BFP239,INDB BFP239 Potato curry (Aloo ki sabzi) (potato curry; ASC214 dum aloo row discarded as 74g fat/100g),dum aloo,bowl,201.57
+fish-curry,fish curry,3,complete,111.13,8.76,3.77,6.69,,indb,ASC246,INDB ASC246 Fish curry (Machli curry),fish curry,bowl,253.97
+ghevar,ghevar,4,incomplete,,,,,,,,,ghevar,,
+green-chutney,green chutney,5,complete,79.42,5.42,10.01,1.60,,indb,OSR098,INDB OSR098 Green chutney,"green chutney,hari chutney,mint coriander chutney",tablespoon,24.40
+gulab-jamun,gulab jamun,6,complete,586.06,2.03,26.09,53.23,,indb,ASC348,INDB ASC348 Gulab Jamun with khoya,"gulab jamun,gulab jamun",piece,156.72
+idli,idli,7,complete,137.54,4.64,28.18,0.33,,indb,ASC144,INDB ASC144 Idli,"idli,idly",idli,25.06
+jalebi,jalebi,8,incomplete,,,,,,,,,jalebi,,
+chicken-seekh-kebab,chicken seekh kebab,9,complete,133.94,11.25,3.11,8.43,,indb,BFP199,INDB BFP199 Mutton seekh kebab (no chicken seekh row; mutton seekh used),chicken seekh kebab,piece,44.99
+kheer,kheer,10,complete,75.03,2.30,10.05,2.97,,indb,ASC282,INDB ASC282 Rice kheer (Chawal ki kheer),kheer,bowl,400.00
+kulfi,kulfi,11,complete,98.43,3.21,11.30,4.70,,indb,ASC321,INDB ASC321 Kulfi,kulfi,piece,270.12
+bhature,bhature,12,incomplete,,,,,,,,,bhature,,
+lassi,lassi,13,complete,35.66,1.29,6.51,0.68,1.00,indb,ASC021,INDB ASC021 Sweet Lassi (Meethi lassi),"lassi,sweet lassi,meethi lassi",tall glass,400.00
+mutton-curry,mutton curry,14,complete,115.64,7.09,2.53,8.54,,indb,BFP194,INDB BFP194 Mutton korma,mutton curry,bowl,366.47
+onion-pakoda,onion pakoda,15,complete,551.64,2.05,6.48,57.61,,indb,BFP415,INDB BFP415 Masala onion pakora/pakoda (Pyaaz ke pakode),"onion pakoda,onion pakora,pyaaz pakoda",piece,70.52
+palak-paneer,palak paneer,16,complete,77.68,4.03,4.43,4.76,,indb,ASC215,INDB ASC215 Spinach paneer (Palak paneer),palak paneer,bowl,295.50
+poha,poha,17,complete,294.53,6.09,35.05,14.14,,indb,BFP044,INDB BFP044 Poha,poha,plate,54.59
+rajma-curry,rajma curry,18,complete,143.73,5.95,16.38,5.77,,indb,ASC165,INDB ASC165 Kidney bean curry (Rajmah curry),rajma curry,bowl,119.92
+rasmalai,rasmalai,19,complete,135.55,1.61,29.17,2.11,,indb,BFP393,INDB BFP393 Rasmalai,rasmalai,piece,317.43
+samosa,samosa,20,complete,443.11,2.21,13.22,42.22,,indb,BFP431,INDB BFP431 Vegetable samosa,samosa,piece,100.93
+shahi-paneer,shahi paneer,21,complete,156.50,5.06,6.64,12.34,,indb,ASC221,INDB ASC221 Shahi paneer,shahi paneer,bowl,259.34
+white-rice,white rice,22,complete,117.19,2.60,25.72,0.18,,indb,ASC113,INDB ASC113 Boiled rice (Uble chawal),"white rice,rice,chawal,boiled rice,steamed rice",plate,300.00
+bhindi-masala,bhindi masala,23,complete,110.81,1.83,4.50,9.27,,indb,BFP269,INDB BFP269 Okra/Lady's fingers fry (Bhindi sabzi/sabji/subji),bhindi masala,bowl,166.34
+chicken-biryani,chicken biryani,24,complete,108.24,6.07,11.17,8.48,,indb,BFP142,INDB BFP142 Chicken pulao (chicken pulao; no chicken biryani row),"chicken biryani,biryani,chicken pulao",plate,400.00
+chai,chai,25,complete,16.14,0.39,2.58,0.53,1.00,indb,ASC001,INDB ASC001 Hot tea (Garam Chai),"chai,tea,garam chai,hot tea",tall glass,210.50
+chole,chole,26,complete,163.43,6.10,19.98,6.84,,indb,ASC162,INDB ASC162 Chickpeas curry (Safed channa curry) (chickpeas curry; closest to chole),"chole,chole masala,chana masala,channa curry",bowl,119.92
+coconut-chutney,coconut chutney,27,complete,265.92,3.59,8.29,25.00,,indb,ASC386,INDB ASC386 Coconut chutney (Nariyal ki chutney),"coconut chutney,nariyal chutney",tablespoon,25.33
+dal-tadka,dal tadka,28,complete,63.43,3.23,6.80,2.48,,indb,BFP178,INDB BFP178 Green gram whole with baghar (Sabut moong dal with tadka),"dal tadka,dal tadka,tadka dal,moong tadka",bowl,225.72
+dosa,dosa,29,complete,380.91,10.34,64.08,8.43,,indb,BFP148,INDB BFP148 Plain dosa,"dosa,dose,plain dosa",dosa,36.13
+roti,Chapati/Roti,,complete,202.31,5.88,35.65,3.56,,indb,ASC096,INDB ASC096 Chapati/Roti,"chapati,chapatti,phulka,wheat roti",chapati,36.00
+paratha,Plain parantha/paratha,,complete,298.30,5.06,30.69,16.86,,indb,ASC097,INDB ASC097 Plain parantha/paratha,"parantha,plain paratha,plain parantha",parantha,55.75
+aloo-paratha,Potato parantha/paratha (Aloo ka parantha/paratha),,complete,205.04,3.70,23.92,10.22,,indb,ASC098,INDB ASC098 Potato parantha/paratha (Aloo ka parantha/paratha),"aloo parantha,potato paratha",parantha,93.36
+mooli-paratha,Radish parantha/paratha (Mooli ka parantha/paratha),,complete,183.52,3.30,20.54,9.53,,indb,ASC099,INDB ASC099 Radish parantha/paratha (Mooli ka parantha/paratha),"radish paratha,mooli parantha",parantha,100.03
+paneer-paratha,Paneer parantha/paratha,,complete,262.97,7.98,24.33,14.62,,indb,ASC105,INDB ASC105 Paneer parantha/paratha,paneer parantha,parantha,85.03
+naan,Naan,,complete,286.45,8.05,51.75,4.99,,indb,ASC142,INDB ASC142 Naan,"nan,tandoori naan",naan,53.17
+makki-roti,Makki ki roti,,complete,263.97,3.49,24.19,16.85,,indb,ASC150,INDB ASC150 Makki ki roti,"makki ki roti,corn roti",roti,85.00
+paushtik-roti,Paushtik roti,,complete,149.26,7.17,26.59,1.51,,indb,ASC472,INDB ASC472 Paushtik roti,poshtik roti,roti,42.94
+plain-pulao,Plain pulao,,complete,140.21,2.34,21.82,4.62,,indb,ASC114,INDB ASC114 Plain pulao,"pulao,veg pulao,plain pulav",plate,307.90
+mixed-vegetable-pulao,Mixed vegetable pulao,,complete,113.05,2.72,17.49,3.33,,indb,ASC115,INDB ASC115 Mixed vegetable pulao,"vegetable pulao,mix veg pulao",plate,400
+mutton-biryani,Mutton biryani/biriyani,,complete,190.76,7.38,22.50,7.72,,indb,ASC122,INDB ASC122 Mutton biryani/biriyani,"gosht biryani,mutton biriyani",plate,207.82
+vegetable-biryani,Vegetable biryani/biriyani,,complete,174.61,3.16,18.56,9.51,,indb,ASC123,INDB ASC123 Vegetable biryani/biriyani,"veg biryani,veg biriyani",plate,301.57
+lemon-rice,"Lemon rice (Pulihora, Elumichai sadam, Chitranna)",,complete,176.30,4.26,21.62,7.88,,indb,ASC124,"INDB ASC124 Lemon rice (Pulihora, Elumichai sadam, Chitranna)","chitranna,pulihora,elumichai sadam",plate,319.16
+curd-rice,Curd rice (Dahi bhaat/Dahi chawal/ Perugu annam/Daddojanam/Thayir saadam),,complete,195.74,5.75,32.93,4.32,,indb,ASC126,INDB ASC126 Curd rice (Dahi bhaat/Dahi chawal/ Perugu annam/Daddojanam/Thayir saadam),"dahi chawal,thayir sadam,daddojanam",plate,216.16
+tamarind-rice,Tamarind rice (Chintapandu pulihora/Puliyodharai/Puli sadam/Huli anna),,complete,373.04,7.45,65.08,8.53,,indb,ASC127,INDB ASC127 Tamarind rice (Chintapandu pulihora/Puliyodharai/Puli sadam/Huli anna),"puliyodharai,puli sadam",plate,127.83
+moong-dal,Washed moong dal (Dhuli moong ki dal),,complete,50.00,2.68,5.91,1.68,,indb,ASC151,INDB ASC151 Washed moong dal (Dhuli moong ki dal),"dhuli moong,yellow moong dal,washed moong dal",bowl,277.00
+urad-dal,Washed urad dal (Dhuli urad ki dal),,complete,61.32,2.51,5.84,2.98,,indb,ASC152,INDB ASC152 Washed urad dal (Dhuli urad ki dal),"dhuli urad,washed urad dal",bowl,296.00
+mixed-dal,Mixed dal,,complete,61.93,2.51,5.79,3.10,,indb,ASC155,INDB ASC155 Mixed dal,"mix dal,dal mix",bowl,297.83
+whole-moong-dal,Whole moong (Moong ki dal),,complete,53.70,2.25,5.22,2.56,,indb,ASC156,INDB ASC156 Whole moong (Moong ki dal),"sabut moong,moong whole",bowl,342.33
+masoor-dal,Whole masoor (Masoor ki dal),,complete,54.05,2.28,5.37,2.52,,indb,ASC157,INDB ASC157 Whole masoor (Masoor ki dal),"whole masoor,sabut masoor",bowl,342.33
+sambar,Sambar,,complete,96.92,3.35,10.57,4.38,,indb,ASC167,INDB ASC167 Sambar,sambhar,bowl,257.25
+boiled-egg,Boiled egg (Ubla anda),,complete,45.35,4.43,0.12,3.04,,indb,ASC056,INDB ASC056 Boiled egg (Ubla anda),"ubla anda,hard boiled egg",egg,151.00
+fried-egg,Fried Egg,,complete,223.67,11.59,0.31,19.62,,indb,ASC057,INDB ASC057 Fried Egg,anda fry,egg,57.75
+anda-bhurji,Scrambled egg (Ande ki bhurji),,complete,155.97,10.29,1.35,12.21,,indb,ASC059,INDB ASC059 Scrambled egg (Ande ki bhurji),"scrambled egg,egg bhurji,ande ki bhurji",egg,70.00
+omelette,Plain omelette/omlet,,complete,272.41,9.66,0.64,25.74,,indb,ASC061,INDB ASC061 Plain omelette/omlet,"omlet,plain omelette",omelette,143.00
+chicken-curry,Chicken curry,,complete,129.22,11.79,3.38,7.57,,indb,ASC240,INDB ASC240 Chicken curry,"murgh curry,chicken masala",bowl,247.93
+baingan-bharta,Brinjal bhartha (Baingan ka bhartha),,complete,65.12,1.38,4.40,4.48,,indb,ASC177,INDB ASC177 Brinjal bhartha (Baingan ka bhartha),"baingan ka bharta,brinjal bharta",bowl,325.83
+aloo-matar,Pea potato curry (Aloo matar),,complete,100.92,3.48,9.74,5.13,,indb,ASC190,INDB ASC190 Pea potato curry (Aloo matar),"pea potato curry,aloo mattar",bowl,277.33
+matar-paneer,Pea paneer curry (Matar paneer),,complete,134.83,6.61,9.29,7.75,,indb,ASC191,INDB ASC191 Pea paneer curry (Matar paneer),"pea paneer,mutter paneer",bowl,277.33
+paneer-curry,Paneer curry,,complete,176.52,7.80,8.40,12.38,,indb,ASC195,INDB ASC195 Paneer curry,paneer gravy,bowl,202.33
+kadhai-paneer,Kadhai Paneer,,complete,107.99,4.33,7.34,6.81,,indb,ASC226,INDB ASC226 Kadhai Paneer,kadai paneer,bowl,318.13
+cabbage-peas,Cabbage and peas (Pattagobhi aur matar),,complete,63.88,3.24,6.24,2.64,,indb,ASC173,INDB ASC173 Cabbage and peas (Pattagobhi aur matar),"pattagobhi matar,cabbage and peas",bowl,166.25
+cucumber-raita,Cucumber raita (Kheere ka raita),,complete,59.13,4.04,6.35,2.08,,indb,ASC273,INDB ASC273 Cucumber raita (Kheere ka raita),"kheere ka raita,kheera raita",bowl,152.67
+onion-tomato-raita,Tomato onion raita (Tamatar aur pyaaz ka raita),,complete,59.00,3.74,7.08,1.84,,indb,ASC269,INDB ASC269 Tomato onion raita (Tamatar aur pyaaz ka raita),tamatar pyaaz raita,bowl,177.67
+masala-dosa,Masala dosa,,complete,164.58,3.29,19.57,7.84,,indb,ASC146,INDB ASC146 Masala dosa,masala dose,dosa,209.66
+rava-dosa,Semolina dosa (Suji/Rava dosa),,complete,227.05,7.30,32.84,7.12,,indb,ASC147,INDB ASC147 Semolina dosa (Suji/Rava dosa),"suji dosa,semolina dosa",dosa,73.41
+dhokla,Dhokla,,complete,216.49,13.45,30.68,5.28,,indb,ASC474,INDB ASC474 Dhokla,gujarati dhokla,piece,39.96
+rava-upma,Semolina upma (Suji/Rava upma),,complete,147.89,3.30,16.31,7.49,,indb,BFP039,INDB BFP039 Semolina upma (Suji/Rava upma),"suji upma,semolina upma,upma",bowl,106.26
+vegetable-upma,Vegetable upma,,complete,146.47,4.73,16.46,6.63,,indb,BFP043,INDB BFP043 Vegetable upma,veg upma,plate,235.66
+plain-khichdi,Plain khitchdi (Plain khichri/khichdi),,complete,57.03,1.72,10.04,1.01,,indb,BFP144,INDB BFP144 Plain khitchdi (Plain khichri/khichdi),"khichri,khitchdi,plain khichri",small bowl,400
+rasam,Rasam with tamarind (Puli rasam/ Chintapandu rasam/ Charu/Saaru),,complete,26.74,1.13,3.37,0.88,,indb,BFP176,INDB BFP176 Rasam with tamarind (Puli rasam/ Chintapandu rasam/ Charu/Saaru),"puli rasam,saaru,charu",curry bowl,389.87
+lemon-rasam,Rasam with lemon (Nimmakaya rasam/Nimmakaya charu/Elumichai rasam/Nimbe hannina saaru),,complete,24.41,1.11,2.85,0.87,,indb,BFP177,INDB BFP177 Rasam with lemon (Nimmakaya rasam/Nimmakaya charu/Elumichai rasam/Nimbe hannina saaru),"nimmakaya rasam,elumichai rasam",curry bowl,394.37
+egg-curry,Egg curry (Anda curry),,complete,117.52,5.38,4.03,8.81,,indb,BFP240,INDB BFP240 Egg curry (Anda curry),anda curry,bowl,151.57
+methi-thepla,Methi thepla,,complete,346.16,8.98,41.34,15.95,,indb,OSR104,INDB OSR104 Methi thepla,"thepla,fenugreek thepla",thepla,36.45
+rice-puttu,Rice puttu (Ari puttu),,complete,81.98,1.26,11.82,3.13,,indb,OSR105,INDB OSR105 Rice puttu (Ari puttu),"ari puttu,puttu",puttu,400
+appam,Appam,,complete,267.70,3.12,13.28,22.63,,indb,BFP153,INDB BFP153 Appam,"palappam,hoppers",appam,152.89
+dal-makhani,Dal makhani,,complete,74.04,3.32,7.96,3.06,,indb,OSR139,INDB OSR139 Dal makhani,"daal makhani,kali dal",bowl,353.36
+salted-lassi,Lassi (salted),,complete,18.84,1.35,1.86,0.72,1.00,indb,ASC022,INDB ASC022 Lassi (salted),"namkeen lassi,chaas lassi",tall glass,400
+saffron-milk,Saffron milk (Kesariya doodh),,complete,102.18,3.17,12.64,4.57,1.00,indb,OSR010,INDB OSR010 Saffron milk (Kesariya doodh),"kesariya doodh,kesar doodh",glass,262.74
+daliya,Cracked wheat porridge (Meetha daliya),,complete,81.57,2.64,8.87,4.08,,indb,ASC047,INDB ASC047 Cracked wheat porridge (Meetha daliya),"cracked wheat porridge,meetha daliya",bowl,400
+suji-halwa,Semolina halwa (Suji ka halwa),,complete,225.65,2.16,24.67,13.38,,indb,ASC293,INDB ASC293 Semolina halwa (Suji ka halwa),"semolina halwa,rava kesari",bowl,159.62
+gajar-halwa,Carrot halwa (Gajar ka halwa),,complete,172.64,3.11,18.53,9.73,,indb,ASC295,INDB ASC295 Carrot halwa (Gajar ka halwa),"carrot halwa,gajar ka halwa",bowl,167.81
+paneer-tikka,Paneer shaslik/tikka,,complete,93.85,5.11,7.98,4.49,,indb,ASC381,INDB ASC381 Paneer shaslik/tikka,"paneer shashlik,paneer tikka",plate,400
+peanut-chutney,Peanut chutney (Mungfali ki chutney),,complete,258.37,11.80,9.87,19.06,,indb,ASC385,INDB ASC385 Peanut chutney (Mungfali ki chutney),mungfali chutney,tablespoon,21.00
+khaman,Khaman (dhokla),,complete,54.73,1.92,5.36,2.80,,indb,BFP439,INDB BFP439 Khaman (dhokla),khaman dhokla,dhokla,118.65
+poshtik-khichdi,Poshtik khichdi/khichri,,complete,93.37,3.04,15.64,1.88,,indb,BFP576,INDB BFP576 Poshtik khichdi/khichri,paushtik khichdi,plate,360.33
+jowar-dosa,Jowar dosa,,complete,294.35,8.50,40.53,10.28,,indb,OSR151,INDB OSR151 Jowar dosa,sorghum dosa,dosa,33.04
+seviyan-upma,Vermicelli upma (Semiya/Seviyan upma),,complete,149.11,3.11,16.88,7.45,,indb,BFP040,INDB BFP040 Vermicelli upma (Semiya/Seviyan upma),"vermicelli upma,semiya upma",bowl,106.26
+sabudana-khichdi,Sago khitchdi/khichri (Sabudana khitchdi/khichri),,complete,187.16,2.72,22.41,10.10,,indb,OSR099,INDB OSR099 Sago khitchdi/khichri (Sabudana khitchdi/khichri),"sago khichdi,sabudana khichri",bowl,271.36
+pav-bhaji,Pav bhaji,,complete,96.53,2.66,11.99,4.32,,indb,OSR112,INDB OSR112 Pav bhaji,pavbhaji,,400
+rice-upma,Rice upma,,complete,151.27,2.63,17.96,7.46,,indb,BFP041,INDB BFP041 Rice upma,chawal upma,bowl,106.26
