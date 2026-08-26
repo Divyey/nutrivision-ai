@@ -5,6 +5,12 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import type { LoginRequest } from '../../types/auth'
 
+const TEST_LOGIN = {
+  name: 'Test User',
+  email: 'nutrivision.ai@gmail.com',
+  password: '12345678',
+}
+
 export function LoginPage() {
   const { login } = useAuth()
   const navigate = useNavigate()
@@ -13,7 +19,16 @@ export function LoginPage() {
   const [submitting, setSubmitting] = useState(false)
 
   return (
-    <Card title="Log in" className="auth-card">
+    <Card className="auth-card">
+      <Typography.Title level={3} className="auth-card-title">
+        Log in
+      </Typography.Title>
+      <Typography.Paragraph type="secondary" className="auth-card-lead">
+        You will land on Home. From there, Scan photographs a plate and Tracking keeps the diary.
+      </Typography.Paragraph>
+      <Typography.Paragraph type="secondary" className="auth-card-demo">
+        {TEST_LOGIN.name}
+      </Typography.Paragraph>
       <Form
         form={form}
         layout="vertical"
@@ -37,17 +52,17 @@ export function LoginPage() {
             { type: 'email', message: 'Enter a valid email' },
           ]}
         >
-          <Input autoComplete="email" />
+          <Input autoComplete="email" placeholder={TEST_LOGIN.email} />
         </Form.Item>
         <Form.Item
           label="Password"
           name="password"
           rules={[{ required: true, message: 'Enter your password' }]}
         >
-          <Input.Password autoComplete="current-password" />
+          <Input.Password autoComplete="current-password" placeholder={TEST_LOGIN.password} />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" block loading={submitting}>
+          <Button type="primary" htmlType="submit" block loading={submitting} className="home-cta">
             Log in
           </Button>
         </Form.Item>
